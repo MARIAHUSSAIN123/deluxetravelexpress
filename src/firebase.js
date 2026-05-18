@@ -13,29 +13,33 @@ import {
   getFirestore,
 } from "firebase/firestore";
 
+
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyAt5gY2N-CdK7-8udDHLaB8RdVvFLXe15E",
+    import.meta.env.VITE_FIREBASE_API_KEY,
 
   authDomain:
-    "deluxe-travel-express.firebaseapp.com",
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
 
   projectId:
-    "deluxe-travel-express",
+    import.meta.env.VITE_FIREBASE_PROJECT_ID,
 
   storageBucket:
-    "deluxe-travel-express.firebasestorage.app",
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 
   messagingSenderId:
-    "546387162060",
+    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
 
   appId:
-    "1:546387162060:web:c8fc9370f144f09c3ba369",
+    import.meta.env.VITE_FIREBASE_APP_ID,
 
   measurementId:
-    "G-EFKEXPG82F",
+    import.meta.env
+      .VITE_FIREBASE_MEASUREMENT_ID,
 };
+
+
 
 const app =
   initializeApp(firebaseConfig);

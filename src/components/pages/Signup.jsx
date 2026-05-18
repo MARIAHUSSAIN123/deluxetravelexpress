@@ -111,6 +111,7 @@ const SignupPage = () => {
         address: formData.address,
         city: formData.city,
         country: formData.country,
+        role: "customer",
         createdAt: new Date(),
       });
 
@@ -130,7 +131,7 @@ const SignupPage = () => {
       });
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/admin");
       }, 2000);
 
     } catch (error) {

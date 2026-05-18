@@ -1,4 +1,3 @@
-
 import React, {
   useEffect,
   useState,
@@ -13,7 +12,13 @@ import {
 } from "firebase/auth";
 
 import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
+import {
   auth,
+  db,
 } from "../../firebase";
 
 const AdminRoute = ({
@@ -31,20 +36,45 @@ const AdminRoute = ({
     const unsubscribe =
       onAuthStateChanged(
         auth,
-        (user) => {
+        async (user) => {
 
-          if (
-            user &&
-            [
-              "mariahussain021@gmail.com",
-              "emile.atcham@deluxetravelexpress.com",
-              "partner2@gmail.com",
-            ].includes(user.email)
-          ) {
+          if (!user) {
 
-            setIsAdmin(true);
+            setIsAdmin(false);
 
-          } else {
+            setLoading(false);
+
+            return;
+          }
+
+          try {
+
+            const userRef = doc(
+              db,
+              "users",
+              user.uid
+            );
+
+            const userSnap =
+              await getDoc(userRef);
+
+            if (
+              userSnap.exists() &&
+              userSnap.data().role ===
+                "admin"
+            ) {
+
+              setIsAdmin(true);
+
+            } else {
+
+              setIsAdmin(false);
+
+            }
+
+          } catch (error) {
+
+            console.log(error);
 
             setIsAdmin(false);
 
@@ -74,20 +104,17 @@ const AdminRoute = ({
         Loading...
       </div>
     );
-
   }
 
   // NOT ADMIN
   if (!isAdmin) {
 
     return (
-      <Navigate to="/signup" />
+      <Navigate to="/" />
     );
-
   }
 
   return children;
 };
 
 export default AdminRoute;
-
