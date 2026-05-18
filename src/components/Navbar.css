@@ -1,0 +1,274 @@
+/* ===== NAVBAR ===== */
+
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 7%;
+
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+}
+
+/* ===== LOGO ===== */
+
+.logo{
+    height: 55px;
+    object-fit: contain;
+}
+
+/* ===== CENTER MENU ===== */
+
+.nav-center{
+    display: flex;
+    align-items: center;
+    gap: 32px;
+
+    list-style: none;
+}
+
+/* LINKS */
+
+.nav-center a{
+    text-decoration: none;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    letter-spacing: 0.5px;
+
+    position: relative;
+
+    transition: 0.3s ease;
+}
+
+/* HOVER */
+
+.nav-center a:hover{
+    color: #d4af37;
+}
+
+/* UNDERLINE */
+
+.nav-center a::after{
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+
+    width: 0%;
+    height: 2px;
+
+    background: linear-gradient(45deg,#d4af37,#ffd700);
+
+    transition: 0.3s;
+}
+
+.nav-center a:hover::after{
+    width: 100%;
+}
+
+/* ===== SIGNUP BUTTON ===== */
+
+.signup-btn{
+    padding: 10px 24px;
+
+    border-radius: 30px;
+
+    text-decoration: none;
+
+    border: 1px solid #d4af37;
+
+    color: #d4af37;
+
+    font-weight: 600;
+
+    transition: 0.35s;
+}
+
+.signup-btn:hover{
+    background: linear-gradient(45deg,#d4af37,#ffd700);
+
+    color: #000;
+
+    box-shadow: 0 8px 20px rgba(212,175,55,0.4);
+}
+
+/* ===== TICKETS BUTTON ===== */
+
+.tickets-btn {
+    padding: 10px 22px;
+    border-radius: 30px;
+    text-decoration: none;
+    background: linear-gradient(45deg, #d4af37, #ffd700);
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: 0.3s ease;
+    white-space: nowrap;
+}
+
+.tickets-btn:hover {
+    opacity: 0.85;
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(212,175,55,0.4);
+}
+
+/* ===== NAV RIGHT ===== */
+
+.nav-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== TOGGLE ===== */
+
+.menu-toggle{
+    display: none;
+
+    font-size: 24px;
+    color: #fff;
+
+    cursor: pointer;
+}
+
+/* ===== LANGUAGE SWITCHER ===== */
+
+.language-switcher{
+    display: flex;
+    align-items: center;
+}
+
+.lang-btn{
+    padding: 8px 16px;
+
+    border-radius: 30px;
+    border: 1px solid #d4af37;
+
+    background: transparent;
+    color: #d4af37;
+
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+    white-space: nowrap;
+}
+
+.lang-btn:hover{
+    background: linear-gradient(45deg,#d4af37,#ffd700);
+    color: #000;
+}
+
+.lang-btn.active{
+    background: linear-gradient(45deg,#d4af37,#ffd700);
+    color: #000;
+}
+
+/* ===== EXPLORE BTN ===== */
+
+.explore-btn {
+    text-decoration: none;
+    color: white;
+}
+
+.explore-btn:hover {
+    text-decoration: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width: 1100px){
+
+    .nav-center{
+        position: absolute;
+        top: 80px;
+        left: -100%;
+        width: 100%;
+        height: auto;
+        background: rgba(0,0,0,0.96);
+        flex-direction: column;
+        padding: 40px 0;
+        gap: 28px;
+        transition: 0.4s ease;
+        z-index: 998;
+    }
+
+    .nav-center.active{
+        left: 0;
+    }
+
+    .menu-toggle{
+        display: block;
+    }
+
+    .nav-right{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .tickets-btn{
+        padding: 7px 14px;
+        font-size: 12px;
+    }
+
+    .lang-btn{
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .signup-btn{
+        padding: 7px 14px;
+        font-size: 13px;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width: 600px){
+
+    .navbar{
+        padding: 12px 4%;
+    }
+
+    .logo{
+        height: 42px;
+    }
+
+    .nav-center a{
+        font-size: 16px;
+    }
+
+    .signup-btn{
+        display: none;
+    }
+
+    .tickets-btn{
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .lang-btn{
+        padding: 7px 13px;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,193 @@
+/* =========================
+   ROUTE CARD
+========================= */
+
+.route-card {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #111;
+  transition: 0.4s ease;
+  border: 1px solid rgba(255, 196, 0, 0.22);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.route-card-img {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+
+.route-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.95) 10%,
+    rgba(0,0,0,0.55) 45%,
+    rgba(0,0,0,0.18) 100%
+  );
+
+  z-index: 1;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.route-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  padding: 34px 30px;
+
+  z-index: 2;
+
+  color: #fff;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.route-card-content h2 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+
+  margin-bottom: 12px;
+
+  color: #fff;
+}
+
+.route-card-content h2 span {
+  color: #f4c400;
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.route-card-content h3 {
+  color: #f4c400;
+
+  font-size: 1.9rem;
+  font-weight: 800;
+
+  margin-bottom: 20px;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.route-info {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  margin-bottom: 28px;
+
+  flex-wrap: wrap;
+}
+
+.route-info p {
+  color: #e7e7e7;
+
+  font-size: 1.05rem;
+  font-weight: 500;
+
+  margin: 0;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.route-btn,
+.coming-btn {
+  width: 100%;
+  height: 60px;
+
+  border: none;
+  border-radius: 16px;
+
+  font-size: 1rem;
+  font-weight: 800;
+
+  transition: 0.3s ease;
+}
+
+/* ACTIVE BUTTON */
+
+.route-btn {
+  background: #f4c400;
+  color: #000;
+
+  cursor: pointer;
+}
+
+.route-btn:hover {
+  background: #ffd93d;
+  transform: scale(1.02);
+}
+
+/* COMING SOON */
+
+.coming-btn {
+  background: rgba(255,255,255,0.08);
+
+  border: 1px solid rgba(244,196,0,0.4);
+
+  color: #f4c400;
+
+  cursor: not-allowed;
+
+  backdrop-filter: blur(6px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .route-card {
+    height: 460px;
+  }
+
+  .route-card-content {
+    padding: 24px;
+  }
+
+  .route-card-content h2 {
+    font-size: 2rem;
+  }
+
+  .route-card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .route-btn,
+  .coming-btn {
+    height: 54px;
+    font-size: 0.95rem;
+  }
+}

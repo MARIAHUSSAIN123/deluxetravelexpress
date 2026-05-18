@@ -1,0 +1,78 @@
+.admin-access-denied {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px;
+
+  background:
+    linear-gradient(
+      rgba(5, 10, 25, 0.94),
+      rgba(5, 10, 25, 0.96)
+    ),
+    url("../../assets/car4.jpg");
+
+  background-size: cover;
+
+  background-position: center;
+}
+
+.admin-access-box {
+  width: 100%;
+
+  max-width: 520px;
+
+  padding: 50px;
+
+  border-radius: 28px;
+
+  text-align: center;
+
+  background:
+    rgba(18, 25, 45, 0.78);
+
+  backdrop-filter: blur(20px);
+
+  border:
+    1px solid rgba(255, 215, 0, 0.18);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.admin-access-box h1 {
+  color: #f7c948;
+
+  font-size: 42px;
+
+  font-weight: 800;
+
+  margin-bottom: 18px;
+}
+
+.admin-access-box p {
+  color: #ffffff;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+
+  .admin-access-box {
+    padding: 36px 24px;
+  }
+
+  .admin-access-box h1 {
+    font-size: 32px;
+  }
+
+  .admin-access-box p {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,118 @@
+.services-section {
+  padding: 90px 6%;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+}
+
+/* Header */
+.services-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.services-header h2 {
+  font-size: 38px;
+  font-weight: 900;
+}
+
+.services-subtitle {
+  max-width: 650px;
+  margin: 15px auto;
+  color: #ccc;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.gold-line {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #d4af37, #ffd700);
+  margin: 20px auto;
+  border-radius: 5px;
+}
+
+/* Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* Card */
+.service-card {
+  position: relative;
+  padding: 30px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  transition: 0.4s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.service-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  border-color: #d4af37;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* Glow overlay */
+.service-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(212,175,55,0.2), transparent 60%);
+  opacity: 0;
+  transition: 0.4s;
+  pointer-events: none;
+}
+
+.service-card:hover .service-overlay {
+  opacity: 1;
+}
+
+/* Title */
+.service-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #ffd700;
+}
+
+/* Text */
+.service-card p {
+  font-size: 14px;
+  color: #ddd;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* Footer */
+.service-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Trips */
+.service-footer span {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* Button */
+.service-footer button {
+  background: linear-gradient(45deg, #d4af37, #ffd700);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.service-footer button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(212,175,55,0.6);
+}
+.service-book-btn {
+  text-decoration: none;
+}

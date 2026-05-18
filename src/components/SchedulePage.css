@@ -1,0 +1,614 @@
+/* =========================
+   SECTION
+========================= */
+
+.schedule-section{
+  padding: 100px 7%;
+  background:
+    radial-gradient(circle at top left, rgba(212,175,55,0.08), transparent 30%),
+    linear-gradient(to bottom, #050505, #111111);
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.section-header{
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.section-header h2{
+  font-size: 48px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.luxury-subtitle{
+  max-width: 760px;
+  margin: auto;
+  color: #bdbdbd;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.header-line{
+  width: 100px;
+  height: 4px;
+  margin: 28px auto 0;
+  border-radius: 20px;
+  background: linear-gradient(
+    45deg,
+    #d4af37,
+    #ffd700,
+    #f5d76e
+  );
+  box-shadow: 0 0 20px rgba(212,175,55,0.5);
+}
+
+/* =========================
+   GRID
+========================= */
+
+.schedule-list{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 35px;
+  align-items: stretch;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.schedule-card-wrapper{
+  position: relative;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px;
+  overflow: hidden;
+  transition: all 0.45s ease;
+  backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  min-height: 620px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.schedule-card-wrapper::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(212,175,55,0.12),
+      transparent 40%
+    );
+  opacity: 0;
+  transition: 0.4s ease;
+  z-index: 0;
+}
+
+.schedule-card-wrapper:hover{
+  transform: translateY(-14px) scale(1.02);
+  border-color: rgba(212,175,55,0.5);
+  box-shadow:
+    0 25px 55px rgba(0,0,0,0.45),
+    0 0 30px rgba(212,175,55,0.18);
+}
+
+.schedule-card-wrapper:hover::before{
+  opacity: 1;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.card-image-box{
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-image-box::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,0.75),
+      rgba(0,0,0,0.15)
+    );
+  z-index: 1;
+}
+
+.card-image-box::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(212,175,55,0.2),
+      transparent
+    );
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+.schedule-card-wrapper:hover .card-image-box::after{
+  opacity: 1;
+}
+
+.schedule-card-wrapper:hover .card-image-box{
+  transform: scale(1.03);
+  transition: 0.5s ease;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.card-content-bottom{
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.route-pill-box{
+  font-size: 38px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+}
+
+.sub-text{
+  color: #c7c7c7;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* =========================
+   TIMES
+========================= */
+
+.timing-grid{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 35px;
+  min-height: 120px;
+  align-content: flex-start;
+}
+
+.time-tag{
+  min-width: 130px;
+  text-align: center;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.time-tag:hover{
+  background:
+    linear-gradient(
+      45deg,
+      #d4af37,
+      #ffd700
+    );
+  color: #000;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(212,175,55,0.35);
+}
+
+/* COMING SOON TAG */
+
+.coming-soon-tag{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      45deg,
+      rgba(212,175,55,0.18),
+      rgba(255,215,0,0.12)
+    );
+  border: 1px solid rgba(212,175,55,0.45);
+  color: #ffd700;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  animation: glowPulse 2s infinite;
+}
+
+@keyframes glowPulse{
+  0%{
+    box-shadow: 0 0 0 rgba(212,175,55,0.2);
+  }
+  50%{
+    box-shadow: 0 0 20px rgba(212,175,55,0.35);
+  }
+  100%{
+    box-shadow: 0 0 0 rgba(212,175,55,0.2);
+  }
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.rider-btn-details{
+  margin-top: auto;
+  padding: 16px 30px;
+  border: none;
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      45deg,
+      #cfa62f,
+      #ffd700
+    );
+  color: #000;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  width: 100%;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rider-btn-details::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.25);
+  transform: skewX(-25deg);
+  transition: 0.6s;
+}
+
+.rider-btn-details:hover::before{
+  left: 120%;
+}
+
+.rider-btn-details:hover{
+  transform: translateY(-4px);
+  box-shadow:
+    0 15px 30px rgba(212,175,55,0.35);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(6px);
+  overflow-y: auto;
+}
+
+.modal-box{
+  background: #111111;
+  border: 1px solid rgba(212,175,55,0.4);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 950px;
+  max-height: none;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  animation: modalIn 0.35s ease;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+  margin: auto;
+}
+@keyframes modalIn{
+  from{
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30px 34px;
+  border-bottom: 1px solid #242424;
+}
+
+.modal-tag{
+  color: #d4af37;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.modal-title{
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.modal-subtitle{
+  color: #999;
+  font-size: 0.95rem;
+}
+
+.modal-close{
+  background: #1b1b1b;
+  border: 1px solid #333;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.modal-close:hover{
+  background: #d4af37;
+  color: #000;
+  border-color: #d4af37;
+  transform: rotate(90deg);
+}
+
+/* =========================
+   MODAL CAR IMAGES
+========================= */
+
+.modal-cars{
+  padding: 24px 34px;
+  border-bottom: 1px solid #222;
+  background: #0c0c0c;
+}
+
+.modal-cars-title{
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.modal-cars-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.modal-car-card{
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #242424;
+  transition: 0.3s ease;
+  background: #151515;
+}
+
+.modal-car-card:hover{
+  transform: translateY(-6px);
+  border-color: #d4af37;
+  box-shadow: 0 10px 25px rgba(212,175,55,0.2);
+}
+
+.modal-car-img{
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-car-name{
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.modal-table-wrap{
+  overflow-y: auto;
+  padding: 24px 34px;
+}
+
+.modal-table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modal-table thead tr{
+  background: #191919;
+}
+
+.modal-table th{
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #2b2b2b;
+}
+
+.modal-table tbody tr{
+  border-bottom: 1px solid #1f1f1f;
+  transition: 0.2s ease;
+}
+
+.modal-table tbody tr:hover{
+  background: #181818;
+}
+
+.station-name{
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 16px;
+}
+
+.time-cell{
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 16px;
+  white-space: nowrap;
+}
+
+.address-cell{
+  color: #9a9a9a;
+  font-size: 0.88rem;
+  padding: 16px;
+  line-height: 1.5;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:992px){
+
+  .schedule-section{
+    padding: 80px 5%;
+  }
+
+  .section-header h2{
+    font-size: 40px;
+  }
+
+  .route-pill-box{
+    font-size: 32px;
+  }
+
+  .schedule-card-wrapper{
+    min-height: 590px;
+  }
+}
+
+@media(max-width:768px){
+
+  .schedule-section{
+    padding: 70px 5%;
+  }
+
+  .section-header h2{
+    font-size: 34px;
+  }
+
+  .luxury-subtitle{
+    font-size: 15px;
+  }
+
+  .route-pill-box{
+    font-size: 28px;
+  }
+
+  .card-image-box{
+    height: 220px;
+  }
+
+  .modal-cars-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .modal-car-img{
+    height: 140px;
+  }
+
+  .modal-header{
+    padding: 22px;
+  }
+
+  .modal-cars{
+    padding: 20px 22px;
+  }
+
+  .modal-table-wrap{
+    padding: 18px;
+  }
+
+  .modal-title{
+    font-size: 1.5rem;
+  }
+
+  .address-cell{
+    display: none;
+  }
+}
+
+@media(max-width:480px){
+
+  .schedule-list{
+    grid-template-columns: 1fr;
+  }
+
+  .card-content-bottom{
+    padding: 24px;
+  }
+
+  .route-pill-box{
+    font-size: 24px;
+  }
+
+  .time-tag{
+    width: 100%;
+  }
+
+  .section-header h2{
+    font-size: 30px;
+  }
+}

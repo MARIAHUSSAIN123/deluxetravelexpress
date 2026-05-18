@@ -1,0 +1,196 @@
+/* =========================
+   ROUTE SECTION
+========================= */
+
+.routes-section {
+  width: 100%;
+  background: #000;
+  padding: 80px 6%;
+}
+
+.routes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 35px;
+  align-items: stretch;
+}
+
+/* =========================
+   ROUTE CARD
+========================= */
+
+.route-card {
+  position: relative;
+  height: 520px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid rgba(255, 196, 0, 0.25);
+  transition: 0.4s ease;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+}
+
+.route-card:hover {
+  transform: translateY(-8px);
+  border-color: #f4c400;
+  box-shadow: 0 0 35px rgba(244, 196, 0, 0.2);
+}
+
+/* =========================
+   CARD IMAGE
+========================= */
+
+.route-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================
+   DARK OVERLAY
+========================= */
+
+.route-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.92) 8%,
+    rgba(0, 0, 0, 0.55) 45%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+}
+
+/* =========================
+   CARD CONTENT
+========================= */
+
+.route-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 34px 30px;
+  z-index: 2;
+  color: white;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.route-content h2 {
+  font-size: 2.7rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.route-content h2 span {
+  color: #f4c400;
+  margin: 0 10px;
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.route-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f4c400;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   INFO ROW
+========================= */
+
+.route-info {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.route-info span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.15rem;
+  color: #e7e7e7;
+  font-weight: 500;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.route-btn {
+  width: 100%;
+  height: 62px;
+  border-radius: 18px;
+  border: none;
+  background: #f4c400;
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.route-btn:hover {
+  background: #ffd93d;
+  transform: scale(1.02);
+}
+
+/* =========================
+   COMING SOON BUTTON
+========================= */
+
+.route-btn.disabled {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(244, 196, 0, 0.5);
+  color: #f4c400;
+  cursor: not-allowed;
+  backdrop-filter: blur(6px);
+}
+
+.route-btn.disabled:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .routes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .route-card {
+    height: 460px;
+  }
+
+  .route-content {
+    padding: 24px;
+  }
+
+  .route-content h2 {
+    font-size: 2rem;
+  }
+
+  .route-price {
+    font-size: 1.6rem;
+  }
+
+  .route-btn {
+    height: 56px;
+    font-size: 1rem;
+  }
+}
