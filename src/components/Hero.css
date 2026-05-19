@@ -150,8 +150,9 @@ body{
 input[type="date"]::-webkit-calendar-picker-indicator{
   filter: invert(1);
   cursor: pointer;
+  display: block;
+  opacity: 1;
 }
-
 /* ===== DATE PLACEHOLDER ===== */
 
 input[type="date"]:not(:valid){
