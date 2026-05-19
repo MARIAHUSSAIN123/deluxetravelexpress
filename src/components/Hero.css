@@ -149,7 +149,7 @@ body{
 
 input[type="date"] {
   position: relative;
-  color-scheme: dark;
+  color-scheme: white;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
