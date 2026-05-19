@@ -10,6 +10,7 @@ import car2 from "../assets/view2.jpg";
 import car4 from "../assets/ottawa.jpg";
 import car5 from "../assets/toronto.jpg";
 import car6 from "../assets/banff.jpg";
+import car3 from "../assets/ottawa2.jpg";
 
 import {
   LanguageContext,
@@ -54,7 +55,7 @@ const SchedulePage = () => {
 
         {
           name: "GMC Yukon",
-          url: "https://i.pinimg.com/1200x/25/f9/e8/25f9e86d122933b55c21dd5101928230.jpg",
+          url: "https://i.pinimg.com/1200x/b4/16/8b/b4168b529d4d1196bb95c887f358cef7.jpg",
         },
 
         {
@@ -187,7 +188,7 @@ const SchedulePage = () => {
 
         {
           name: "Infiniti QX80",
-          url: "https://i.pinimg.com/736x/73/c9/e0/73c9e096d13f4a9928b81f8c386347d1.jpg",
+          url: "https://i.pinimg.com/736x/69/39/44/693944a4a5a0fd02d85da2942ad9ae90.jpg",
         },
       ],
 
@@ -299,20 +300,20 @@ const SchedulePage = () => {
     "04:00 PM",
   ],
 
-  bgImage: car4,
+  bgImage: car3,
 
 carImages: [
   {
     name: "Cadillac Escalade",
-    url: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+    url: "https://i.pinimg.com/1200x/e1/86/f1/e186f11690989b4f763cc81adaaeb37c.jpg",
   },
   {
     name: "GMC Yukon",
-    url: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80",
+    url: "https://i.pinimg.com/236x/39/1e/1b/391e1b4e31093ed04a03f2c3dd689d95.jpg",
   },
   {
     name: "Infiniti QX80",
-    url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80",
+    url: "https://i.pinimg.com/736x/69/39/44/693944a4a5a0fd02d85da2942ad9ae90.jpg",
   },
 ],
 
@@ -362,15 +363,15 @@ carImages: [
   carImages: [
   {
     name: "Cadillac Escalade",
-    url: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+    url: "https://i.pinimg.com/1200x/05/8c/24/058c24cce35349e60ad301b599281812.jpg",
   },
   {
     name: "GMC Yukon",
-    url: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80",
+    url: "https://i.pinimg.com/1200x/60/fb/87/60fb87a63d762f90089e7761b1ead937.jpg",
   },
   {
     name: "Infiniti QX80",
-    url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80",
+    url: "https://i.pinimg.com/736x/69/39/44/693944a4a5a0fd02d85da2942ad9ae90.jpg",
   },
 ],
 
