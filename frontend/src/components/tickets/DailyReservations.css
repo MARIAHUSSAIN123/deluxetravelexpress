@@ -1,0 +1,304 @@
+
+.daily-reservations {
+  width: 100%;
+  min-height: 100vh;
+
+  background: #000;
+
+  padding: 120px 8%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.daily-top {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.daily-tag {
+  color: #ffcc00;
+
+  font-size: 14px;
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 15px;
+}
+
+.daily-top h2 {
+  color: white;
+
+  font-size: 80px;
+  font-weight: 900;
+
+  line-height: 1.1;
+}
+
+.daily-top h2 span {
+  color: #ffcc00;
+}
+
+.daily-grid {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 35px;
+}
+
+.reservation-card {
+
+  width: 100%;
+  color:white;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,18,18,0.98),
+      rgba(8,8,8,0.98)
+    );
+
+  border:
+    1px solid rgba(255,204,0,0.12);
+
+  border-radius: 28px;
+
+  padding: 40px 45px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 40px;
+
+  transition: 0.35s ease;
+
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 0 25px rgba(0,0,0,0.45);
+}
+
+.reservation-card:hover {
+
+  transform: translateY(-5px);
+
+  border-color: rgba(255,204,0,0.5);
+
+  box-shadow:
+    0 0 35px rgba(255,204,0,0.12);
+}
+
+/* LEFT SIDE */
+
+.reservation-left {
+  flex: 2;
+}
+
+.reservation-left h3 {
+
+  color: white;
+
+  font-size: 42px;
+  font-weight: 900;
+
+  line-height: 1.2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+.reservation-left span {
+  color: #ffcc00;
+}
+
+.reservation-left p {
+
+  margin-top: 12px;
+
+  color: #9c9c9c;
+
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* MIDDLE */
+
+.reservation-middle {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+}
+
+.reservation-middle h4 {
+
+  background:
+    rgba(255,204,0,0.12);
+
+  color: #ffcc00;
+
+  padding: 12px 22px;
+
+  border-radius: 40px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  border:
+    1px solid rgba(255,204,0,0.15);
+}
+
+/* RIGHT */
+
+.reservation-right {
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.reservation-right h2 {
+
+  color: white;
+
+  font-size: 42px;
+  font-weight: 900;
+
+  margin-bottom: 18px;
+}
+
+.book-btn,
+.sold-btn {
+
+  border: none;
+  outline: none;
+
+  width: auto;
+
+  padding: 16px 36px;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  transition: 0.3s ease;
+}
+
+.book-btn {
+
+  background: #ffcc00;
+  color: black;
+
+  cursor: pointer;
+}
+
+.book-btn:hover {
+
+  transform: scale(1.05);
+
+  background: #ffd633;
+}
+
+.sold-btn {
+
+  background: #2a2a2a;
+  color: #888;
+
+  cursor: not-allowed;
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+
+  .daily-top h2 {
+    font-size: 60px;
+  }
+
+  .reservation-left h3 {
+    font-size: 32px;
+  }
+
+  .reservation-right h2 {
+    font-size: 32px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .reservation-card {
+
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 30px;
+  }
+
+  .reservation-middle {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .reservation-right {
+
+    width: 100%;
+
+    align-items: flex-start;
+  }
+
+  .book-btn,
+  .sold-btn {
+
+    width: 100%;
+  }
+
+  .daily-top h2 {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .daily-reservations {
+    padding: 90px 5%;
+  }
+
+  .daily-top h2 {
+    font-size: 34px;
+  }
+
+  .reservation-left h3 {
+
+    font-size: 24px;
+
+    flex-wrap: wrap;
+  }
+
+  .reservation-left p {
+    font-size: 15px;
+  }
+
+  .reservation-middle h4 {
+    font-size: 13px;
+  }
+
+  .reservation-right h2 {
+    font-size: 28px;
+  }
+
+  .reservation-card {
+    gap: 25px;
+  }
+}
+

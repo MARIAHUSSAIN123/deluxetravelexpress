@@ -1,0 +1,452 @@
+/* ===== GLOBAL ===== */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body{
+  overflow-x: hidden;
+  background: #000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== HERO SECTION ===== */
+
+.hero{
+  position: relative;
+  min-height: 100vh;
+  background:
+    url("../assets/hero.jpg")
+    center/cover no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+
+  padding:
+    120px 6%
+    70px;
+
+  overflow: hidden;
+}
+
+/* ===== OVERLAY ===== */
+
+.hero-overlay{
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(0,0,0,0.88) 30%,
+      rgba(0,0,0,0.45) 70%
+    );
+}
+
+/* ===== HERO CONTENT ===== */
+
+.hero-content{
+  position: relative;
+  z-index: 2;
+
+  flex: 1;
+  max-width: 560px;
+
+  color: #fff;
+
+  animation:
+    slideLeft 1s ease;
+}
+
+.hero-content h1{
+  font-size: 62px;
+  font-weight: 900;
+  line-height: 1.1;
+
+  margin-bottom: 18px;
+
+  background:
+    linear-gradient(
+      45deg,
+      #d4af37,
+      #fff,
+      #d4af37
+    );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color:
+    transparent;
+}
+
+.hero-content span{
+  color: #d4af37;
+}
+
+.hero-slogan{
+  color: #d4af37;
+
+  font-size: 22px;
+  font-weight: 600;
+
+  margin-bottom: 20px;
+
+  letter-spacing: 1px;
+}
+
+.hero-content p{
+  font-size: 17px;
+  color: #dcdcdc;
+
+  line-height: 1.8;
+
+  margin-bottom: 32px;
+}
+
+/* ===== EXPLORE BUTTON ===== */
+
+.explore-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    14px 34px;
+
+  border-radius: 40px;
+
+  background:
+    linear-gradient(
+      45deg,
+      #d4af37,
+      #ffd700
+    );
+
+  color: #000;
+  text-decoration: none;
+
+  font-weight: 700;
+  font-size: 15px;
+
+  transition: 0.35s ease;
+
+  border: none;
+}
+
+.explore-btn:hover{
+  transform:
+    translateY(-4px)
+    scale(1.03);
+
+  box-shadow:
+    0 10px 25px
+    rgba(212,175,55,0.45);
+}
+
+/* ===== BOOKING BOX ===== */
+
+.booking-box{
+  position: relative;
+  z-index: 2;
+
+  width: 360px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(15px);
+
+  border:
+    1px solid
+    rgba(212,175,55,0.35);
+
+  border-radius: 22px;
+
+  padding: 26px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  box-shadow:
+    0 15px 40px
+    rgba(0,0,0,0.45);
+
+  animation:
+    slideRight 1s ease;
+}
+
+/* ===== INPUTS ===== */
+
+.booking-box select,
+.booking-box input{
+  width: 100%;
+
+  padding:
+    14px 15px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 12px;
+
+  background:
+    rgba(255,255,255,0.10);
+
+  color: #fff;
+
+  font-size: 14px;
+}
+
+.booking-box input::placeholder{
+  color:
+    rgba(255,255,255,0.6);
+}
+
+.booking-box select option{
+  background: #111;
+  color: #fff;
+}
+
+/* ===== DATE ICON ===== */
+
+input[type="date"]::-webkit-calendar-picker-indicator{
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* ===== DISABLED ===== */
+
+.booking-box input:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ===== TRIP TYPE ===== */
+
+.trip-type{
+  display: flex;
+  gap: 10px;
+}
+
+.trip-type button{
+  flex: 1;
+
+  padding:
+    12px 10px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #2e2e2e;
+
+  color: #fff;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.trip-type button:hover{
+  background: #444;
+}
+
+.trip-type .active{
+  background:
+    linear-gradient(
+      45deg,
+      #d4af37,
+      #ffd700
+    );
+
+  color: #000;
+  font-weight: 700;
+}
+
+/* ===== BOOK BUTTON ===== */
+
+.book-btn{
+  width: 100%;
+
+  border: none;
+
+  padding:
+    15px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      45deg,
+      #d4af37,
+      #ffd700
+    );
+
+  color: #000;
+
+  font-weight: 800;
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition: 0.35s ease;
+}
+
+.book-btn:hover{
+  transform:
+    translateY(-4px)
+    scale(1.02);
+
+  box-shadow:
+    0 10px 25px
+    rgba(212,175,55,0.45);
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes slideLeft{
+  from{
+    opacity: 0;
+    transform:
+      translateX(-80px);
+  }
+
+  to{
+    opacity: 1;
+    transform:
+      translateX(0);
+  }
+}
+
+@keyframes slideRight{
+  from{
+    opacity: 0;
+    transform:
+      translateX(80px);
+  }
+
+  to{
+    opacity: 1;
+    transform:
+      translateX(0);
+  }
+}
+
+/* ===== LAPTOP ===== */
+
+@media(max-width: 1100px){
+
+  .hero{
+    gap: 25px;
+  }
+
+  .hero-content h1{
+    font-size: 52px;
+  }
+
+  .booking-box{
+    width: 330px;
+  }
+}
+
+/* ===== TABLET ===== */
+
+@media(max-width: 992px){
+
+  .hero{
+    flex-direction: column;
+
+    justify-content: center;
+    text-align: center;
+
+    padding:
+      140px 5%
+      80px;
+  }
+
+  .hero-content{
+    max-width: 100%;
+  }
+
+  .booking-box{
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width: 768px){
+
+  .hero{
+    padding:
+      120px 5%
+      70px;
+  }
+
+  .hero-content h1{
+    font-size: 42px;
+  }
+
+  .hero-slogan{
+    font-size: 18px;
+  }
+
+  .hero-content p{
+    font-size: 15px;
+  }
+
+  .booking-box{
+    padding: 22px;
+  }
+
+  .explore-btn{
+    padding:
+      12px 24px;
+
+    font-size: 14px;
+  }
+}
+
+/* ===== SMALL MOBILE ===== */
+
+@media(max-width: 480px){
+
+  .hero-content h1{
+    font-size: 34px;
+  }
+
+  .hero-slogan{
+    font-size: 16px;
+  }
+
+  .hero-content p{
+    font-size: 14px;
+  }
+
+  .booking-box{
+    width: 100%;
+    padding: 18px;
+  }
+
+  .trip-type{
+    flex-direction: column;
+  }
+
+  .trip-type button{
+    width: 100%;
+  }
+
+  .book-btn{
+    font-size: 14px;
+  }
+}
