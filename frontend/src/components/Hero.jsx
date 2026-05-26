@@ -141,7 +141,7 @@ const Hero = () => {
 
         const response =
           await fetch(
-            "http://localhost:5000/create-checkout-session",
+  `${import.meta.env.VITE_API_URL}/create-checkout-session`,
 
             {
               method: "POST",
