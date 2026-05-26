@@ -134,6 +134,7 @@ const Hero = () => {
         return;
       }
 
+      
       try {
 
         const stripe =
