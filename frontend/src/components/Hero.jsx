@@ -32,16 +32,39 @@ const Hero = () => {
 
   const t =
     translations[language];
+  const schedules = {
+  "Calgary-Edmonton": [
+    "07:00 AM",
+    "09:00 AM",
+    "03:00 PM",
+    "05:00 PM",
+  ],
+
+  "Edmonton-Calgary": [
+    "11:00 AM",
+    "01:00 PM",
+    "07:00 PM",
+    "09:00 PM",
+  ],
+};
+
+const currentRoute =
+  `${bookingData.origin}-${bookingData.destination}`;
+
+const availableTimes =
+  schedules[currentRoute] || [];
 
   const [bookingData, setBookingData] =
-    useState({
-      origin: "",
-      destination: "",
-      tripType: "One Way",
-      departureDate: "",
-      returnDate: "",
-      seats: 1,
-    });
+  useState({
+    origin: "",
+    destination: "",
+    tripType: "One Way",
+    departureDate: "",
+    departureTime: "",
+    returnDate: "",
+    returnTime: "",
+    seats: 1,
+  });
 
   // HANDLE INPUT CHANGE
   const handleChange = (e) => {
@@ -113,6 +136,16 @@ const Hero = () => {
 
         return;
       }
+      if (!bookingData.departureTime) {
+
+  Swal.fire({
+    icon: "warning",
+    title: "Departure Time Required",
+    text: "Please select departure time",
+  });
+
+  return;
+      }
 
       // RETURN DATE
       if (
@@ -132,6 +165,20 @@ const Hero = () => {
         });
 
         return;
+      }
+      if (
+  bookingData.tripType ===
+    "Round Trip" &&
+  !bookingData.returnTime
+) {
+
+  Swal.fire({
+    icon: "warning",
+    title: "Return Time Required",
+    text: "Please select return time",
+  });
+
+  return;
       }
 
       
@@ -352,25 +399,66 @@ const Hero = () => {
           style={{
             colorScheme: "dark",
           }}
-        />
+        /><select
+  name="departureTime"
+  value={bookingData.departureTime}
+  onChange={handleChange}
+>
+  <option value="">
+    Select Departure Time
+  </option>
+
+  {availableTimes.map((time) => (
+    <option
+      key={time}
+      value={time}
+    >
+      {time}
+    </option>
+  ))}
+</select>
 
         {/* RETURN DATE */}
         {bookingData.tripType ===
-          "Round Trip" && (
+  "Round Trip" && (
 
-          <input
-            type="date"
-            name="returnDate"
-            value={
-              bookingData.returnDate
-            }
-            onChange={handleChange}
-            style={{
-              colorScheme: "dark",
-            }}
-          />
+  <>
+    <input
+      type="date"
+      name="returnDate"
+      value={
+        bookingData.returnDate
+      }
+      onChange={handleChange}
+      style={{
+        colorScheme: "dark",
+      }}
+    />
 
-        )}
+    <select
+      name="returnTime"
+      value={
+        bookingData.returnTime
+      }
+      onChange={handleChange}
+    >
+      <option value="">
+        Select Return Time
+      </option>
+
+      {availableTimes.map(
+        (time) => (
+          <option
+            key={time}
+            value={time}
+          >
+            {time}
+          </option>
+        )
+      )}
+    </select>
+  </>
+)}
 
         {/* BOOK BUTTON */}
         <button
