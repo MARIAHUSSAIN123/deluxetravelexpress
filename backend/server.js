@@ -23,7 +23,7 @@ const FRONTEND_URL =
 
 app.use(cors({
   origin: [
-    "https://deluxetravelexpress-sxqn.vercel.app",
+    "https://deluxetravelexpress.vercel.app",
     "http://localhost:5173",
     "http://localhost:5180"
   ],
