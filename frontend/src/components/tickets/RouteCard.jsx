@@ -49,7 +49,7 @@ const RouteCard = ({
               key={index}
               className="trip-time"
             >
-              🚌 {time}
+             🚗 {time}
             </p>
 
           ))}
