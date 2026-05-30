@@ -15,605 +15,280 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../../firebase";
+
 import Swal from "sweetalert2";
 
 import emailjs from "@emailjs/browser";
 
-// EMAILJS
-const EMAILJS_SERVICE_ID =
-  "service_w54sho2";
+// =======================
+// EMAILJS CONFIG
+// =======================
 
-const EMAILJS_USER_TEMPLATE =
-  "template_w8jlcvg";
-
-const EMAILJS_PUBLIC_KEY =
-  "Q2aYrQi8_-EbYY6kQ";
+const EMAILJS_SERVICE_ID = "service_w54sho2";
+const EMAILJS_USER_TEMPLATE = "template_w8jlcvg";
+const EMAILJS_DRIVER_TEMPLATE = "template_w8jlcvg";
+const EMAILJS_PUBLIC_KEY = "Q2aYrQi8_-EbYY6kQ";
+const DRIVER_EMAIL = "deluxedrive05@gmail.com";
 
 const AdminDashboard = () => {
 
-  const [bookings, setBookings] =
-    useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [usersCount, setUsersCount] = useState(0);
+  const [tripsCount, setTripsCount] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [search, setSearch] = useState("");
 
-  const [loading, setLoading] =
-    useState(true);
-
-  const [usersCount, setUsersCount] =
-    useState(0);
-
-  const [tripsCount, setTripsCount] =
-    useState(0);
-
-  const [totalRevenue, setTotalRevenue] =
-    useState(0);
+  // =======================
+  // FETCH DATA
+  // =======================
 
   useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const bookingsQuery = query(
+          collection(db, "bookings"),
+          orderBy("createdAt", "desc")
+        );
+        const bookingsSnapshot = await getDocs(bookingsQuery);
+        const bookingsData = bookingsSnapshot.docs.map((docItem) => ({
+          id: docItem.id,
+          ...docItem.data(),
+        }));
+        setBookings(bookingsData);
 
-    const fetchDashboardData =
-      async () => {
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        setUsersCount(usersSnapshot.size);
 
-        try {
+        const tripsSnapshot = await getDocs(collection(db, "trips"));
+        setTripsCount(tripsSnapshot.size);
 
-          // BOOKINGS
-          const bookingsQuery =
-            query(
-              collection(
-                db,
-                "bookings"
-              ),
-              orderBy(
-                "createdAt",
-                "desc"
-              )
-            );
+        const revenue = bookingsData.reduce(
+          (total, booking) => total + Number(booking.totalPrice || 0), 0
+        );
+        setTotalRevenue(revenue);
 
-          const bookingsSnapshot =
-            await getDocs(
-              bookingsQuery
-            );
-
-          const bookingsData =
-            bookingsSnapshot.docs.map(
-              (docItem) => ({
-                id: docItem.id,
-                ...docItem.data(),
-              })
-            );
-
-          setBookings(
-            bookingsData
-          );
-
-          // USERS
-          const usersSnapshot =
-            await getDocs(
-              collection(
-                db,
-                "users"
-              )
-            );
-
-          setUsersCount(
-            usersSnapshot.size
-          );
-
-          // TRIPS
-          const tripsSnapshot =
-            await getDocs(
-              collection(
-                db,
-                "trips"
-              )
-            );
-
-          setTripsCount(
-            tripsSnapshot.size
-          );
-
-          // REVENUE
-          const revenue =
-            bookingsData.reduce(
-              (
-                total,
-                booking
-              ) =>
-                total +
-                Number(
-                  booking.totalPrice ||
-                    0
-                ),
-              0
-            );
-
-          setTotalRevenue(
-            revenue
-          );
-
-        } catch (error) {
-
-          console.log(
-            "FETCH ERROR:",
-            error
-          );
-
-        } finally {
-
-          setLoading(false);
-
-        }
-      };
-
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchDashboardData();
-
   }, []);
- const resetAllSeats =
-  async () => {
 
+  // =======================
+  // RESET SEATS
+  // =======================
+
+  const resetAllSeats = async () => {
     try {
-
-      const tripsSnapshot =
-        await getDocs(
-          collection(
-            db,
-            "trips"
-          )
-        );
-
-      // FIREBASE UPDATE
-      const promises =
-        tripsSnapshot.docs.map(
-          (tripDoc) => {
-
-            return updateDoc(
-              doc(
-                db,
-                "trips",
-                tripDoc.id
-              ),
-              {
-                availableSeats: 5,
-              }
-            );
-
-          }
-        );
-
-      await Promise.all(
-        promises
+      const tripsSnapshot = await getDocs(collection(db, "trips"));
+      const promises = tripsSnapshot.docs.map((tripDoc) =>
+        updateDoc(doc(db, "trips", tripDoc.id), { availableSeats: 5 })
       );
-
-      // UI UPDATE
-      const updatedBookings =
-        bookings.map(
-          (booking) => ({
-            ...booking,
-            availableSeats: 5,
-          })
-        );
-
-      setBookings(
-        updatedBookings
-      );
-
-      Swal.fire({
-  icon: "success",
-  title: "Seats Reset",
-  text:
-    "All seats reset to 5",
-});
+      await Promise.all(promises);
+      Swal.fire({ icon: "success", title: "Seats Reset", text: "All seats reset to 5" });
     } catch (error) {
-
       console.log(error);
-
-     Swal.fire({
-  icon: "error",
-  title: "Reset Failed",
-  text:
-    "Something went wrong while resetting seats",
-});
+      Swal.fire({ icon: "error", title: "Reset Failed", text: "Something went wrong" });
     }
   };
 
+  // =======================
   // UPDATE STATUS
-  const updateBookingStatus =
-    async (
-      booking,
-      status
-    ) => {
+  // =======================
 
-      try {
+  const updateBookingStatus = async (booking, status) => {
+    try {
+      await updateDoc(doc(db, "bookings", booking.id), { status });
 
-        // FIREBASE DOC REF
-        const bookingRef =
-          doc(
-            db,
-            "bookings",
-            booking.id
-          );
+      if (status === "approved") {
 
-        // FIREBASE UPDATE
-        await updateDoc(
-          bookingRef,
+        // USER EMAIL
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_USER_TEMPLATE,
           {
-            status: status,
-          }
-        );
-       
-        // EMAIL DATA
-       const emailData = {
-
-  passenger_name:
-    booking.passengerName,
-
-  passenger_email:
-    booking.email,
-
-  from:
-    booking.from,
-
-  to:
-    booking.to,
-
-  departure:
-    booking.departure,
-
-  arrival:
-    booking.arrival,
-
-  passengers:
-    booking.passengers,
-
-    email: 
-    booking.email,
-    to_email: booking.email,
-
-  total_price:
-    booking.totalPrice,
-
-  status:
-    status,
-};
-
-        console.log(
-          "EMAIL DATA:",
-          emailData
+            to_email: booking["e-mail"] || booking.email,
+            passenger_name: booking.passengerName,
+            email: booking["e-mail"] || booking.email,
+            from: booking.from,
+            to: booking.to,
+            departure: booking.departureDate,
+            arrival: booking.arrival || booking.arrivalDate || "",
+            passengers: booking.passengers,
+            total_price: booking.totalPrice,
+            status: "Approved ✔️",
+          },
+          EMAILJS_PUBLIC_KEY
         );
 
-        // SEND EMAIL
-       // SEND EMAIL
-const response =
-  await emailjs.send(
-    EMAILJS_SERVICE_ID,
-    EMAILJS_USER_TEMPLATE,
-    emailData,
-    EMAILJS_PUBLIC_KEY
+        // DRIVER EMAIL
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_DRIVER_TEMPLATE,
+          {
+            to_email: DRIVER_EMAIL,
+            passenger_name: booking.passengerName,
+            email: booking["e-mail"] || booking.email,
+            phone: booking.phone || "",
+            from: booking.from,
+            to: booking.to,
+            departure: booking.departureDate,
+            arrival: booking.arrival || "",
+            passengers: booking.passengers,
+            total_price: booking.totalPrice,
+            status: "New Approved Booking",
+          },
+          EMAILJS_PUBLIC_KEY
+        );
+      }
+
+      // UPDATE UI
+      setBookings(bookings.map((item) =>
+        item.id === booking.id ? { ...item, status } : item
+      ));
+
+      Swal.fire({ icon: "success", title: "Booking Updated", text: `Booking ${status}` });
+
+    } catch (error) {
+      console.log("Full error", error);
+      Swal.fire({ icon: "error", title: "Error", text: error.message || JSON.stringify(error) });
+    }
+  };
+
+  // =======================
+  // FILTERED BOOKINGS
+  // =======================
+
+  const filteredBookings = bookings.filter((booking) =>
+    booking.passengerName?.toLowerCase().includes(search.toLowerCase())
   );
 
-// SEND REMINDER AFTER 10 SECONDS (TEST)
-setTimeout(async () => {
-
-  try {
-
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
-
-      
-EMAILJS_USER_TEMPLATE,
-      {
-        passenger_name:
-          booking.passengerName,
-
-        to_email:
-          booking.email,
-
-        from:
-          booking.from,
-
-        to:
-          booking.to,
-
-        departure:
-          booking.departure,
-      },
-
-      EMAILJS_PUBLIC_KEY
-    );
-
-    console.log(
-      "Reminder Email Sent"
-    );
-
-  } catch (error) {
-
-    console.log(
-      "REMINDER ERROR:",
-      error
-    );
-
-  }
-
-}, 10000);
-
-console.log(
-  "EMAIL SUCCESS:",
-  response
-);
-
-        // UPDATE UI
-        const updatedBookings =
-          bookings.map(
-            (item) => {
-
-              if (
-                item.id ===
-                booking.id
-              ) {
-
-                return {
-                  ...item,
-                  status: status,
-                };
-              }
-
-              return item;
-            }
-          );
-
-        setBookings(
-          updatedBookings
-        );
-
-       Swal.fire({
-  icon: "success",
-  title: "Booking Updated",
-  text:
-    `Booking ${status}`,
-});
-
-      } catch (error) {
-
-        console.log(
-          "FULL ERROR:",
-          error
-        );
-
-      Swal.fire({
-  icon: "error",
-  title: "Error",
-  text:
-    error.message,
-});
-
-      }
-    };
-
+  // =======================
   // LOADING
+  // =======================
+
   if (loading) {
-
-    return (
-      <div className="loading-text">
-        Loading Dashboard...
-      </div>
-    );
-
+    return <div className="loading-text">Loading Dashboard...</div>;
   }
 
   return (
     <div className="admin-bookings-page">
 
-      <h1 className="admin-bookings-title">
-        Admin Dashboard
-      </h1>
-      <button
-  className="reset-btn"
-  onClick={resetAllSeats}
->
-  Reset All Seats
-</button>
+      <h1 className="admin-bookings-title">Admin Dashboard</h1>
+
+      <input
+        type="text"
+        placeholder="Search bookings..."
+        className="search-input"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <button className="reset-btn" onClick={resetAllSeats}>
+        Reset All Seats
+      </button>
 
       {/* STATS */}
       <div className="dashboard-stats">
-
-        <div className="stat-card">
-
-          <h3>
-            Total Bookings
-          </h3>
-
-          <p>
-            {bookings.length}
-          </p>
-
-        </div>
-
-        <div className="stat-card">
-
-          <h3>
-            Total Users
-          </h3>
-
-          <p>
-            {usersCount}
-          </p>
-
-        </div>
-
-        <div className="stat-card">
-
-          <h3>
-            Total Trips
-          </h3>
-
-          <p>
-            {tripsCount}
-          </p>
-
-        </div>
-
-        <div className="stat-card">
-
-          <h3>
-            Total Revenue
-          </h3>
-
-          <p>
-            $
-            {totalRevenue}
-          </p>
-
-        </div>
-
+        <div className="stat-card"><h3>Total Bookings</h3><p>{bookings.length}</p></div>
+        <div className="stat-card"><h3>Approved</h3><p>{bookings.filter((b) => b.status === "approved").length}</p></div>
+        <div className="stat-card"><h3>Pending</h3><p>{bookings.filter((b) => !b.status || b.status === "pending").length}</p></div>
+        <div className="stat-card"><h3>Users</h3><p>{usersCount}</p></div>
+        <div className="stat-card"><h3>Trips</h3><p>{tripsCount}</p></div>
+        <div className="stat-card"><h3>Revenue</h3><p>${totalRevenue.toLocaleString()}</p></div>
       </div>
 
-      {/* BOOKINGS */}
-      {bookings.length === 0 ? (
+      {/* ===================== */}
+      {/* DESKTOP TABLE         */}
+      {/* ===================== */}
 
-        <div className="no-bookings">
-          No bookings found
-        </div>
+      <div className="bookings-table-wrapper">
+        <table className="bookings-table">
+          <thead>
+            <tr>
+              <th>Passenger</th>
+              <th>Route</th>
+              <th>Email</th>
+              <th>Passengers</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredBookings.map((booking) => (
+              <tr key={booking.id}>
+                <td>{booking.passengerName}</td>
+                <td>{booking.from} → {booking.to}</td>
+                <td>{booking["e-mail"] || booking.email}</td>
+                <td>{booking.passengers}</td>
+                <td>${booking.totalPrice}</td>
+                <td>
+                  <span className={`status-badge ${
+                    booking.status === "approved" ? "status-approved" :
+                    booking.status === "rejected" ? "status-rejected" :
+                    "status-pending"
+                  }`}>
+                    {booking.status || "pending"}
+                  </span>
+                </td>
+                <td>
+                  <div className="booking-actions">
+                    <button className="approve-btn" onClick={() => updateBookingStatus(booking, "approved")}>
+                      Approve
+                    </button>
+                    <button className="reject-btn" onClick={() => updateBookingStatus(booking, "rejected")}>
+                      Reject
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      ) : (
+      {/* ===================== */}
+      {/* MOBILE CARDS          */}
+      {/* ===================== */}
 
-        <div className="admin-bookings-grid">
+      <div className="mobile-bookings">
+        {filteredBookings.map((booking) => (
+          <div key={booking.id} className="mobile-booking-card">
 
-          {bookings.map(
-            (booking) => (
+            <h3>{booking.passengerName}</h3>
 
-              <div
-                className="booking-card"
-                key={booking.id}
-              >
+            <p>🛣️ Route: <span>{booking.from} → {booking.to}</span></p>
+            <p>📧 Email: <span>{booking["e-mail"] || booking.email}</span></p>
+            <p>👥 Passengers: <span>{booking.passengers}</span></p>
+            <p>💰 Total: <span>${booking.totalPrice}</span></p>
+            <p>📅 Date: <span>{booking.departureDate}</span></p>
 
-                {/* STATUS */}
-                <div
-                  className={`status-badge ${
-                    booking.status ===
-                    "approved"
-                      ? "status-approved"
-                      : booking.status ===
-                        "rejected"
-                      ? "status-rejected"
-                      : "status-pending"
-                  }`}
-                >
+            <div className="mobile-card-footer">
+              <span className={`status-badge ${
+                booking.status === "approved" ? "status-approved" :
+                booking.status === "rejected" ? "status-rejected" :
+                "status-pending"
+              }`}>
+                {booking.status || "pending"}
+              </span>
 
-                  {booking.status ||
-                    "pending"}
-
-                </div>
-
-                <h2 className="booking-route">
-
-                  {booking.from}
-                  {" → "}
-                  {booking.to}
-
-                </h2>
-
-                <div className="booking-info">
-
-                  <p>
-                    Name:
-                    <span>
-                      {
-                        booking.passengerName
-                      }
-                    </span>
-                  </p>
-
-                  <p>
-                    Email:
-                    <span>
-                      {
-                        booking.email
-                      }
-                    </span>
-                  </p>
-
-                  <p>
-                    Phone:
-                    <span>
-                      {
-                        booking.phone
-                      }
-                    </span>
-                  </p>
-
-                  <p>
-                    Passengers:
-                    <span>
-                      {
-                        booking.passengers
-                      }
-                    </span>
-                  </p>
-
-                  <p>
-                    Payment:
-                    <span>
-                      {
-                        booking.paymentMethod
-                      }
-                    </span>
-                  </p>
-
-                  <p>
-                    Seats Left:
-                    <span>
-                      {
-                        booking.availableSeats ??
-                        "N/A"
-                      }
-                    </span>
-                  </p>
-
-                </div>
-
-                <div className="booking-price">
-
-                  $
-                  {
-                    booking.totalPrice
-                  }
-                  {" "}CAD
-
-                </div>
-
-                {/* ACTIONS */}
-                <div className="booking-actions">
-
-                  <button
-                    className="approve-btn"
-                    onClick={() =>
-                      updateBookingStatus(
-                        booking,
-                        "approved"
-                      )
-                    }
-                  >
-                    Approve
-                  </button>
-
-                  <button
-                    className="reject-btn"
-                    onClick={() =>
-                      updateBookingStatus(
-                        booking,
-                        "rejected"
-                      )
-                    }
-                  >
-                    Reject
-                  </button>
-
-                </div>
-
+              <div className="booking-actions">
+                <button className="approve-btn" onClick={() => updateBookingStatus(booking, "approved")}>
+                  ✓ Approve
+                </button>
+                <button className="reject-btn" onClick={() => updateBookingStatus(booking, "rejected")}>
+                  ✕ Reject
+                </button>
               </div>
-            )
-          )}
+            </div>
 
-        </div>
-
-      )}
+          </div>
+        ))}
+      </div>
 
     </div>
   );

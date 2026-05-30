@@ -57,10 +57,11 @@ const AdminRoute = ({
 
             const userSnap =
               await getDoc(userRef);
-
+ console.log("USER:",user?.uid);
+ console.log('ADMIN CHECK:',userSnap.data());
             if (
               userSnap.exists() &&
-              userSnap.data().role ===
+              userSnap.data()?.role?.trim().toLowerCase() ===
                 "admin"
             ) {
 

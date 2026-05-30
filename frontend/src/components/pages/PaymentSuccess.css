@@ -1,0 +1,113 @@
+
+
+.success-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    to right,
+    #000000,
+    #111111
+  );
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+}
+
+.success-card {
+  background: #111;
+
+  border: 1px solid #333;
+
+  border-radius: 20px;
+
+  padding: 50px;
+
+  width: 100%;
+  max-width: 500px;
+
+  text-align: center;
+
+  box-shadow: 0 0 40px
+    rgba(255, 215, 0, 0.15);
+}
+
+.success-icon {
+  width: 120px;
+  height: 120px;
+
+  background: #1fdf64;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 auto 30px;
+
+  font-size: 60px;
+  color: white;
+  font-weight: bold;
+}
+
+.success-card h1 {
+  color: white;
+  font-size: 40px;
+
+  margin-bottom: 15px;
+}
+
+.success-card p {
+  color: #ccc;
+
+  font-size: 18px;
+
+  line-height: 30px;
+
+  margin-bottom: 30px;
+}
+
+.success-card button {
+  padding: 14px 30px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #f4b400;
+
+  color: black;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.success-card button:hover {
+  opacity: 0.9;
+}
+
+.loader {
+  width: 70px;
+  height: 70px;
+
+  border: 5px solid #333;
+  border-top: 5px solid #f4b400;
+
+  border-radius: 50%;
+
+  margin: 0 auto 30px;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

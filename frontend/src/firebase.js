@@ -43,6 +43,7 @@ const firebaseConfig = {
 
 const app =
   initializeApp(firebaseConfig);
+  console.log(firebaseConfig);
 
 /* AUTH */
 export const auth =

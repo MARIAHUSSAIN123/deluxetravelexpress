@@ -4,7 +4,7 @@ import { useState } from "react";
 const DailyReservations = ({
   selectedRoute,
   trips,
-  handleBooking,
+  handleSelectTrip,
 }) => {
 
   const [selectedDate, setSelectedDate] =
@@ -37,7 +37,7 @@ const DailyReservations = ({
           {selectedRoute.to}
         </h2>
 
-        {/* DATE SELECT FIRST */}
+        {/* DATE SELECT */}
 
         <div
           style={{
@@ -74,7 +74,7 @@ const DailyReservations = ({
         </div>
       </div>
 
-      {/* USER MUST SELECT DATE */}
+      {/* NO DATE */}
 
       {!selectedDate ? (
 
@@ -99,10 +99,13 @@ const DailyReservations = ({
               trip.availableSeats <= 0;
 
             return (
+
               <div
                 className="reservation-card"
                 key={trip.id}
               >
+
+                {/* TIME */}
 
                 <div className="trip-time">
 
@@ -118,16 +121,15 @@ const DailyReservations = ({
                     {trip.duration}
                   </p>
 
-                  {/* SHOW SELECTED DATE */}
-
                   <p>
                     Travel Date:
                     {" "}
                     {selectedDate}
                   </p>
+
                 </div>
 
-                {/* LIVE SEATS */}
+                {/* SEATS */}
 
                 <div className="trip-seats">
 
@@ -138,9 +140,11 @@ const DailyReservations = ({
                         : "seat-badge available"
                     }
                   >
+
                     {soldOut
                       ? "Sold Out"
                       : `${trip.availableSeats} Seats Remaining`}
+
                   </span>
 
                 </div>
@@ -154,9 +158,10 @@ const DailyReservations = ({
                   </h2>
 
                   <p>CAD</p>
+
                 </div>
 
-                {/* BOOK BUTTON */}
+                {/* BUTTON */}
 
                 <button
                   disabled={soldOut}
@@ -166,10 +171,10 @@ const DailyReservations = ({
                       : "book-btn"
                   }
                   onClick={() =>
-                    handleBooking({
-                      ...trip,
-                      selectedDate,
-                    })
+                    handleSelectTrip(
+                      trip,
+                      selectedDate
+                    )
                   }
                 >
 
@@ -178,6 +183,7 @@ const DailyReservations = ({
                     : "BUY TICKET"}
 
                 </button>
+
               </div>
             );
           })}

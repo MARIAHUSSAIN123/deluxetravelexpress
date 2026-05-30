@@ -10,9 +10,11 @@ const RouteCard = ({
   disabled,
   openSchedules,
 }) => {
+
   return (
+
     <div className="route-card">
-      
+
       {/* IMAGE */}
       <img
         src={image}
@@ -25,22 +27,53 @@ const RouteCard = ({
 
       {/* CONTENT */}
       <div className="route-card-content">
+
         <h2>
-          {from} <span>→</span> {to}
+          {from}
+          {" "}
+          <span>→</span>
+          {" "}
+          {to}
         </h2>
 
-        <h3>${price} CAD</h3>
+        <h3>
+          ${price} CAD
+        </h3>
 
-        <div className="route-info">
-          <p>🚌 {trips}</p>
-          <p>⏱ {duration}</p>
+        {/* TIMINGS */}
+        <div className="route-times">
+
+          {trips.map((time, index) => (
+
+            <p
+              key={index}
+              className="trip-time"
+            >
+              🚌 {time}
+            </p>
+
+          ))}
+
         </div>
 
+        {/* DURATION */}
+        <div className="route-info">
+
+          <p>
+            ⏱ {duration}
+          </p>
+
+        </div>
+
+        {/* BUTTON */}
         {disabled ? (
+
           <button className="coming-btn">
             Coming Soon
           </button>
+
         ) : (
+
           <button
             className="route-btn"
             onClick={() =>
@@ -49,8 +82,11 @@ const RouteCard = ({
           >
             VIEW SCHEDULES
           </button>
+
         )}
+
       </div>
+
     </div>
   );
 };

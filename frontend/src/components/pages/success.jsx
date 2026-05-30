@@ -1,8 +1,94 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import emailjs from "@emailjs/browser";
 
 const Success = () => {
+
+  const location = useLocation();
+
+  useEffect(() => {
+
+    const booking = location.state?.booking;
+
+    if (!booking) return;
+
+    // =========================
+    // USER CONFIRMATION EMAIL
+    // =========================
+
+    emailjs.send(
+      "service_cjuobum",
+      "template_slom0uw",
+      {
+        passenger_name:
+          booking.passengerName,
+
+        email:
+          booking["e-mail"],
+
+        from:
+          booking.from,
+
+        to:
+          booking.to,
+
+        departure:
+          booking.departureDate,
+
+        arrival:
+          booking.arrivalDate || "Pending",
+
+        passengers:
+          booking.passengers,
+
+        total_price:
+          booking.totalPrice,
+      },
+
+      "Q2aYrQi8_-EbYY6kQ"
+    );
+
+    // =========================
+    // ADMIN ALERT EMAIL
+    // =========================
+
+    emailjs.send(
+      "service_cjuobum",
+      "template_gdj4dlk",
+      {
+        passenger_name:
+          booking.passengerName,
+
+        email:
+          booking["e-mail"],
+
+        from:
+          booking.from,
+
+        to:
+          booking.to,
+
+        departure:
+          booking.departureDate,
+
+        arrival:
+          booking.arrivalDate || "Pending",
+
+        passengers:
+          booking.passengers,
+
+        total_price:
+          booking.totalPrice,
+      },
+
+      "Q2aYrQi8_-EbYY6kQ"
+    );
+
+  }, [location]);
+
   return (
+
     <div
       style={{
         minHeight: "100vh",
@@ -96,22 +182,6 @@ const Success = () => {
             </button>
           </Link>
 
-          <button
-            style={{
-              padding:
-                "14px 30px",
-              border:
-                "1px solid #555",
-              borderRadius: "10px",
-              background:
-                "transparent",
-              color: "white",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            Download Ticket
-          </button>
         </div>
       </div>
     </div>
