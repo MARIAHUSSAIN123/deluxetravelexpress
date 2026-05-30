@@ -306,7 +306,7 @@ console.log(
       // ======================
       // STRIPE REDIRECT
       // ======================
-      const apiUrl = import.meta.env.VITE_API_URL;
+   const apiUrl = import.meta.env.VITE_API_URL || "https://deluxetravelexpress-4j89.vercel.app";
 console.log(apiUrl);
       if (!apiUrl) {
         throw new Error("VITE_API_URL is not set in .env file");
