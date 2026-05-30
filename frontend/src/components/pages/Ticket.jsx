@@ -405,110 +405,115 @@ console.log("LOCALSTORAGE CHECK")
             </div>
 
             {/* STEP 1 — TRIP OPTIONS */}
-{bookingStep === 1 && (
-  <>
-    {/* TRIP TYPE */}
-    <div className="trip-type-ticket">
-      <button
-        className={!isRoundTrip ? "active-trip-btn" : ""}
-        onClick={() => setIsRoundTrip(false)}
-      >
-        One Way
-      </button>
-      <button
-        className={isRoundTrip ? "active-trip-btn" : ""}
-        onClick={() => setIsRoundTrip(true)}
-      >
-        Round Trip
-      </button>
-    </div>
+            {bookingStep === 1 && (
+              <>
+                {/* TRIP TYPE */}
+                <div className="trip-type-ticket">
+                  <button
+                    className={!isRoundTrip ? "active-trip-btn" : ""}
+                    onClick={() => setIsRoundTrip(false)}
+                  >
+                    One Way
+                  </button>
+                  <button
+                    className={isRoundTrip ? "active-trip-btn" : ""}
+                    onClick={() => setIsRoundTrip(true)}
+                  >
+                    Round Trip
+                  </button>
+                </div>
+ {/* PASSENGERS */}
+ <div className="passenger-select">
+                  <label>Number Of Passengers</label>
+                  <select
+                    value={passengers}
+                    onChange={(e) => setPassengers(Number(e.target.value))}
+                  >
+                    {[...Array(selectedTrip.availableSeats)].map((_, i) => (
+                      <option key={i + 1} value={i + 1}>{i + 1}</option>
+                    ))}
+                  </select>
+                </div>
+             
 
-    {/* DEPARTURE DATE */}
-    <div className="date-box">
-      <label>Departure Date</label>
-      <input
-        type="date"
-        value={departureDate}
-        min={minDate}
-        onChange={(e) => setDepartureDate(e.target.value)}
-      />
-    </div>
+               
+                   {/* DEPARTURE DATE */}
+                <div className="date-box">
+                  <label>Departure Date</label>
+                  <input
+                    type="date"
+                    value={departureDate}
+                    min={minDate}
+                    onChange={(e) => setDepartureDate(e.target.value)}
+                  />
+                </div>
+                 {/* RETURN DATE */}
+                {isRoundTrip && (
+                  <div className="date-box">
+                    <label>Return Date</label>
+                    <input
+                      type="date"
+                      value={returnDate}
+                      min={departureDate || minDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                    />
+                  </div>
+                  
+                )}\
+                
+               
+                {/* SEATS */}
+                <div className="seat-left-box">
+                  {selectedTrip.availableSeats} Seats Remaining
+                </div>
+\
+               
 
-    {/* RETURN DATE */}
-    {isRoundTrip && (
-      <div className="date-box">
-        <label>Return Date</label>
-        <input
-          type="date"
-          value={returnDate}
-          min={departureDate || minDate}
-          onChange={(e) => setReturnDate(e.target.value)}
-        />
-      </div>
-    )}
+                {/* RETURN TRIP */}
+                {isRoundTrip && (
+                  <div className="return-trip-box">
+                    <label>Select Return Trip</label>
+                    <select
+                      value={selectedReturnTrip?.id || ""}
+                      onChange={(e) => {
+                        const foundTrip = trips.find((trip) => trip.id === e.target.value);
+                        setSelectedReturnTrip(foundTrip);
+                      }}
+                    >
+                      <option value="">Select Return Time</option>
+                      {trips
+                        .filter(
+                          (trip) =>
+                            trip.from === selectedTrip.to &&
+                            trip.to === selectedTrip.from &&
+                            trip.status === "active"
+                        )
+                        .map((trip) => (
+                          <option key={trip.id} value={trip.id}>
+                            {trip.departure} {" → "} {trip.arrival} {" | "} {trip.availableSeats} seats
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                )}
 
-    {/* ✅ RETURN TRIP — moved directly below Return Date */}
-    {isRoundTrip && (
-      <div className="return-trip-box">
-        <label>Select Return Trip</label>
-        <select
-          value={selectedReturnTrip?.id || ""}
-          onChange={(e) => {
-            const foundTrip = trips.find((trip) => trip.id === e.target.value);
-            setSelectedReturnTrip(foundTrip);
-          }}
-        >
-          <option value="">Select Return Time</option>
-          {trips
-            .filter(
-              (trip) =>
-                trip.from === selectedTrip.to &&
-                trip.to === selectedTrip.from &&
-                trip.status === "active"
-            )
-            .map((trip) => (
-              <option key={trip.id} value={trip.id}>
-                {trip.departure} {" → "} {trip.arrival} {" | "} {trip.availableSeats} seats
-              </option>
-            ))}
-        </select>
-      </div>
-    )}
+                {/* TOTAL */}
+                <h3 className="booking-total">
+                  Total: ${isRoundTrip ? 90 * passengers * 2 : 90 * passengers}
+                </h3>
 
-    {/* ✅ PASSENGERS — moved before Seats Remaining */}
-    <div className="passenger-select">
-      <label>Number Of Passengers</label>
-      <select
-        value={passengers}
-        onChange={(e) => setPassengers(Number(e.target.value))}
-      >
-        {[...Array(selectedTrip.availableSeats)].map((_, i) => (
-          <option key={i + 1} value={i + 1}>{i + 1}</option>
-        ))}
-      </select>
-    </div>
+                {/* NEXT BUTTON */}
+                <button
+                  className="next-step-btn"
+                  onClick={() => {
+                    if (validateStepOne()) setBookingStep(2);
+                  }}
+                >
+                  Next →
+                </button>
+              </>
+            )}
 
-    {/* SEATS */}
-    <div className="seat-left-box">
-      {selectedTrip.availableSeats} Seats Remaining
-    </div>
-
-    {/* TOTAL */}
-    <h3 className="booking-total">
-      Total: ${isRoundTrip ? 90 * passengers * 2 : 90 * passengers}
-    </h3>
-
-    {/* NEXT BUTTON */}
-    <button
-      className="next-step-btn"
-      onClick={() => {
-        if (validateStepOne()) setBookingStep(2);
-      }}
-    >
-      Next →
-    </button>
-  </>
-)}
             {/* STEP 2 — PASSENGER INFO */}
             {bookingStep === 2 && (
               <>
