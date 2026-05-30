@@ -62,6 +62,7 @@ const Hero = () => {
   // RETURN TIMES
   // =====================
   const getReturnTimes = () => {
+    // Return trip mein route opposite hota hai
     if (bookingData.origin === "Calgary" && bookingData.destination === "Edmonton") {
       return ["11:00 AM", "01:00 PM", "07:00 PM", "09:00 PM"];
     }
@@ -260,8 +261,13 @@ const Hero = () => {
           name="departureTime"
           value={bookingData.departureTime}
           onChange={handleChange}
+          disabled={!bookingData.origin || !bookingData.destination}
         >
-          <option value="">Select Departure Time</option>
+          <option value="">
+            {!bookingData.origin || !bookingData.destination
+              ? "Select Origin & Destination First"
+              : "Select Departure Time"}
+          </option>
           {getDepartureTimes().map((time) => (
             <option key={time} value={time}>{time}</option>
           ))}
@@ -275,6 +281,7 @@ const Hero = () => {
               type="date"
               name="returnDate"
               value={bookingData.returnDate}
+              min={bookingData.departureDate}
               onChange={handleChange}
               style={{ colorScheme: "dark" }}
             />
@@ -284,8 +291,13 @@ const Hero = () => {
               name="returnTime"
               value={bookingData.returnTime}
               onChange={handleChange}
+              disabled={!bookingData.origin || !bookingData.destination}
             >
-              <option value="">Select Return Time</option>
+              <option value="">
+                {!bookingData.origin || !bookingData.destination
+                  ? "Select Origin & Destination First"
+                  : "Select Return Time"}
+              </option>
               {getReturnTimes().map((time) => (
                 <option key={time} value={time}>{time}</option>
               ))}
