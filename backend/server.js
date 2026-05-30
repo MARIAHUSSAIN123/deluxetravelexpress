@@ -2,7 +2,6 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 const admin = require("firebase-admin");
 
@@ -52,6 +51,7 @@ const FRONTEND_URL =
 
 app.use(cors({
   origin: [
+    "https://deluxetravelexpress.vercel.app",
     "https://deluxetravelexpress-sxqn.vercel.app",
     "http://localhost:5173",
     "http://localhost:5180"
@@ -145,12 +145,11 @@ function parseDepHour(timeStr) {
 }
 
 // =====================
-// CRON JOB
-// Har 30 min check karta hai
-// 4 ghante pehle reminder email
+// CRON ROUTE
+// Vercel har 30 min call karta hai
 // =====================
 
-cron.schedule("*/30 * * * *", async () => {
+app.get("/send-reminders", async (req, res) => {
 
   console.log("⏰ Checking upcoming departures...");
 
@@ -170,9 +169,10 @@ cron.schedule("*/30 * * * *", async () => {
       .get();
 
     if (snapshot.empty) {
-      console.log("No bookings to remind.");
-      return;
+      return res.json({ message: "No bookings to remind." });
     }
+
+    let sent = 0;
 
     for (const docItem of snapshot.docs) {
 
@@ -188,7 +188,6 @@ cron.schedule("*/30 * * * *", async () => {
 
       if (!userEmail) continue;
 
-      // EMAIL BHEJO
       await transporter.sendMail({
         from: `"Deluxe Travel Express" <${process.env.EMAIL_USER}>`,
         to: userEmail,
@@ -210,16 +209,19 @@ cron.schedule("*/30 * * * *", async () => {
         `,
       });
 
-      console.log(`✅ Reminder sent to ${userEmail}`);
-
-      // Mark reminderSent = true
       await dbAdmin.collection("bookings").doc(docItem.id).update({
         reminderSent: true,
       });
+
+      sent++;
+      console.log(`✅ Reminder sent to ${userEmail}`);
     }
 
+    res.json({ message: `${sent} reminders sent.` });
+
   } catch (error) {
-    console.log("Cron job error:", error);
+    console.log("Cron error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
