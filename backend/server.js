@@ -13,15 +13,23 @@ const stripe = require("stripe")(
 // FIREBASE ADMIN
 // =====================
 
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-  }),
-});
+let dbAdmin;
 
-const dbAdmin = admin.firestore();
+try {
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      }),
+    });
+  }
+  dbAdmin = admin.firestore();
+  console.log("Firebase initialized successfully");
+} catch (error) {
+  console.log("Firebase init error:", error.message);
+}
 
 // =====================
 // NODEMAILER
@@ -52,7 +60,6 @@ const FRONTEND_URL =
 app.use(cors({
   origin: [
     "https://deluxetravelexpress.vercel.app",
-    "https://deluxetravelexpress-sxqn.vercel.app",
     "http://localhost:5173",
     "http://localhost:5180"
   ],
@@ -91,8 +98,6 @@ app.post(
           ? 90 * passengers * 2
           : 90 * passengers);
 
-      console.log("FRONTEND_URL:", FRONTEND_URL);
-
       const session =
         await stripe.checkout.sessions.create({
           payment_method_types: ["card"],
@@ -114,8 +119,6 @@ app.post(
           cancel_url: `${FRONTEND_URL}/payment-cancel`,
         });
 
-      console.log("Stripe session created");
-
       res.json({ url: session.url });
 
     } catch (error) {
@@ -127,8 +130,6 @@ app.post(
 
 // =====================
 // PARSE DEPARTURE HOUR
-// "08:00 AM" → 8
-// "02:00 PM" → 14
 // =====================
 
 function parseDepHour(timeStr) {
@@ -146,21 +147,14 @@ function parseDepHour(timeStr) {
 
 // =====================
 // CRON ROUTE
-// Vercel har 30 min call karta hai
 // =====================
 
 app.get("/send-reminders", async (req, res) => {
-
-  console.log("⏰ Checking upcoming departures...");
-
   try {
-
     const now = new Date();
     const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000);
     const targetDate = fourHoursLater.toISOString().split("T")[0];
     const targetHour = fourHoursLater.getHours();
-
-    console.log(`Target date: ${targetDate}, hour: ${targetHour}`);
 
     const snapshot = await dbAdmin
       .collection("bookings")
@@ -175,17 +169,11 @@ app.get("/send-reminders", async (req, res) => {
     let sent = 0;
 
     for (const docItem of snapshot.docs) {
-
       const booking = docItem.data();
-
       if (booking.departureDate !== targetDate) continue;
-
       const depHour = parseDepHour(booking.departure || "");
-
       if (Math.abs(depHour - targetHour) > 1) continue;
-
       const userEmail = booking["e-mail"] || booking.email;
-
       if (!userEmail) continue;
 
       await transporter.sendMail({
@@ -196,14 +184,14 @@ app.get("/send-reminders", async (req, res) => {
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 30px; background: #f9f9f9; border-radius: 10px;">
             <h2 style="color: #0ea5e9;">Deluxe Travel Express</h2>
             <p>Dear <strong>${booking.passengerName}</strong>,</p>
-            <p>This is a reminder that your trip departs in approximately <strong>4 hours</strong>.</p>
+            <p>Your trip departs in approximately <strong>4 hours</strong>.</p>
             <table style="width:100%; border-collapse:collapse; margin:20px 0;">
               <tr><td style="padding:8px; color:#666;">Route:</td><td style="padding:8px;"><strong>${booking.from} → ${booking.to}</strong></td></tr>
               <tr><td style="padding:8px; color:#666;">Date:</td><td style="padding:8px;"><strong>${booking.departureDate}</strong></td></tr>
               <tr><td style="padding:8px; color:#666;">Departure:</td><td style="padding:8px;"><strong>${booking.departure}</strong></td></tr>
               <tr><td style="padding:8px; color:#666;">Passengers:</td><td style="padding:8px;"><strong>${booking.passengers}</strong></td></tr>
             </table>
-            <p>Please be at the stop <strong>on time</strong>. We look forward to serving you!</p>
+            <p>Please be at the stop <strong>on time</strong>!</p>
             <p style="color:#0ea5e9; font-weight:bold;">— The Deluxe Travel Express Team</p>
           </div>
         `,
@@ -214,7 +202,6 @@ app.get("/send-reminders", async (req, res) => {
       });
 
       sent++;
-      console.log(`✅ Reminder sent to ${userEmail}`);
     }
 
     res.json({ message: `${sent} reminders sent.` });
@@ -226,11 +213,7 @@ app.get("/send-reminders", async (req, res) => {
 });
 
 // =====================
-// SERVER
+// VERCEL KE LIYE
 // =====================
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server Running On Port ${PORT}`);
-});
+module.exports = app;
