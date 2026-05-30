@@ -43,6 +43,7 @@ const SchedulePage = () => {
         "07:00 AM",
         "12:00 PM",
         "05:00 PM",
+        "05:00 PM"
       ],
 
       bgImage: car1,
@@ -168,9 +169,10 @@ const SchedulePage = () => {
       to: "Calgary",
 
       times: [
-        "08:00 AM",
+        "11:00 AM",
         "01:00 PM",
-        "06:00 PM",
+        "07:00 PM",
+        "09:00 PM"
       ],
 
       bgImage: car2,
@@ -296,8 +298,7 @@ const SchedulePage = () => {
   to: "Ottawa",
 
   times: [
-    "09:00 AM",
-    "04:00 PM",
+   "coming-soon"
   ],
 
   bgImage: car3,
