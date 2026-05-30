@@ -21,7 +21,15 @@ const FRONTEND_URL =
 // MIDDLEWARE
 // =====================
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://deluxetravelexpress-sxqn.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:5180"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 app.use(express.json());
 
