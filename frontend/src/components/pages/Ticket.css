@@ -561,6 +561,7 @@
   font-weight: 700;
 
   margin-bottom: 22px;
+  order:2;
 }
 
 /* PAYMENT METHODS */
@@ -864,6 +865,7 @@
 
 .passenger-select {
   margin-bottom: 24px;
+  order:1;
 }
 
 .passenger-select label {
