@@ -18,8 +18,9 @@ import emailjs from "@emailjs/browser";
 // =========================
 
 const EMAILJS_SERVICE_ID = "service_w54sho2";
-const EMAILJS_TEMPLATE_ID = "template_w8jlcvg";
+const EMAILJS_ADMIN_TEMPLATE = "template_7s50fav"; // admin ko notify
 const EMAILJS_PUBLIC_KEY = "Q2aYrQi8_-EbYY6kQ";
+const ADMIN_EMAIL = "deluxedrive05@gmail.com";
 
 const DriverPanel = () => {
 
@@ -34,10 +35,7 @@ const DriverPanel = () => {
     try {
       const snapshot = await getDocs(collection(db, "bookings"));
       const data = snapshot.docs
-        .map((docItem) => ({
-          id: docItem.id,
-          ...docItem.data(),
-        }))
+        .map((docItem) => ({ id: docItem.id, ...docItem.data() }))
         .filter((booking) => booking.status === "approved");
       setBookings(data);
     } catch (error) {
@@ -48,107 +46,97 @@ const DriverPanel = () => {
   };
 
   // =========================
-  // UPDATE STATUS + EMAILS
+  // UPDATE STATUS + NOTIFY ADMIN
   // =========================
 
   const updateStatus = async (booking, status) => {
     try {
 
+      // UPDATE FIRESTORE
       await updateDoc(doc(db, "bookings", booking.id), {
         travelStatus: status,
       });
 
       console.log("STATUS UPDATED:", status);
 
-      const userEmail = booking["e-mail"] || booking.email;
       const departureTime = booking.departure || booking.departureDate;
 
       // =========================
-      // BOARDING → 2 ghante pehle reminder
+      // BOARDING → Admin ko notify
       // =========================
 
       if (status === "boarding") {
         await emailjs.send(
           EMAILJS_SERVICE_ID,
-          EMAILJS_TEMPLATE_ID,
+          EMAILJS_ADMIN_TEMPLATE,
           {
-            to_email: userEmail,
+            to_email: ADMIN_EMAIL,
+            name: booking.passengerName,
+            message: `🚏 Boarding has started for ${booking.passengerName} — ${booking.from} → ${booking.to} at ${departureTime}`,
             passenger_name: booking.passengerName,
+            email: booking["e-mail"] || booking.email,
+            phone: booking.phone || "",
             from: booking.from,
             to: booking.to,
             departure: departureTime,
-            arrival: booking.arrival || "",
             passengers: booking.passengers,
             total_price: booking.totalPrice || "",
-            status: `⏰ Reminder: Your Deluxe Travel Express bus departs at ${departureTime}. Please be at the stop on time!`,
           },
           EMAILJS_PUBLIC_KEY
         );
-        console.log("2HR REMINDER EMAIL SENT");
+        console.log("ADMIN NOTIFIED: Boarding started");
       }
 
       // =========================
-      // DEPARTURE → trip started email
+      // DEPARTURE → Admin ko notify
       // =========================
 
       if (status === "departed") {
         await emailjs.send(
           EMAILJS_SERVICE_ID,
-          EMAILJS_TEMPLATE_ID,
+          EMAILJS_ADMIN_TEMPLATE,
           {
-            to_email: userEmail,
+            to_email: ADMIN_EMAIL,
+            name: booking.passengerName,
+            message: `🚌 Bus has departed — ${booking.from} → ${booking.to} | Passenger: ${booking.passengerName}`,
             passenger_name: booking.passengerName,
+            email: booking["e-mail"] || booking.email,
+            phone: booking.phone || "",
             from: booking.from,
             to: booking.to,
             departure: departureTime,
-            arrival: booking.arrival || "",
             passengers: booking.passengers,
             total_price: booking.totalPrice || "",
-            status: "🚌 Your trip has departed! Sit back and enjoy the journey.",
           },
           EMAILJS_PUBLIC_KEY
         );
-        console.log("DEPARTURE EMAIL SENT");
+        console.log("ADMIN NOTIFIED: Departed");
       }
 
       // =========================
-      // ARRIVAL → 4 ghante baad thank you
+      // ARRIVAL → Admin ko notify
       // =========================
 
       if (status === "arrived") {
-
-        const FOUR_HOURS = 4 * 60 * 60 * 1000;
-
-        setTimeout(async () => {
-          try {
-            await emailjs.send(
-              EMAILJS_SERVICE_ID,
-              EMAILJS_TEMPLATE_ID,
-              {
-                to_email: userEmail,
-                passenger_name: booking.passengerName,
-                from: booking.from,
-                to: booking.to,
-                departure: departureTime,
-                arrival: booking.arrival || "",
-                passengers: booking.passengers,
-                total_price: booking.totalPrice || "",
-                status: "Dear Customer, We would like to extend our sincere thanks for traveling with Deluxe Travel Express. Your trust is invaluable to us, and we are honored to have accompanied you on your journey. We hope your experience combined comfort, peace of mind, and quality service. We look forward to welcoming you again very soon! — The Deluxe Travel Express Team 🌟",
-              },
-              EMAILJS_PUBLIC_KEY
-            );
-
-            await updateDoc(doc(db, "bookings", booking.id), {
-              thankYouSent: true,
-            });
-
-            console.log("THANK YOU EMAIL SENT");
-          } catch (err) {
-            console.log("Thank you email error:", err);
-          }
-        }, FOUR_HOURS);
-
-        console.log("Thank you email scheduled for 4 hours later");
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_ADMIN_TEMPLATE,
+          {
+            to_email: ADMIN_EMAIL,
+            name: booking.passengerName,
+            message: `✅ Bus has arrived — ${booking.from} → ${booking.to} | Passenger: ${booking.passengerName}`,
+            passenger_name: booking.passengerName,
+            email: booking["e-mail"] || booking.email,
+            phone: booking.phone || "",
+            from: booking.from,
+            to: booking.to,
+            departure: departureTime,
+            passengers: booking.passengers,
+            total_price: booking.totalPrice || "",
+          },
+          EMAILJS_PUBLIC_KEY
+        );
+        console.log("ADMIN NOTIFIED: Arrived");
       }
 
       fetchBookings();
@@ -180,13 +168,13 @@ const DriverPanel = () => {
 
       <div className="driver-header">
         <h1>Driver Dashboard</h1>
-        <p>Manage passenger trip updates</p>
+        <p>Notify admin about trip status</p>
       </div>
 
       {loading ? (
         <div className="driver-loading">Loading bookings...</div>
       ) : bookings.length === 0 ? (
-        <div className="driver-empty">No approved bookings found</div>
+        <div className="driver-empty">No active bookings found</div>
       ) : (
         <div className="driver-grid">
           {bookings.map((booking) => (
