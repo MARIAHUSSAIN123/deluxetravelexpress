@@ -61,7 +61,7 @@ app.use(cors({
   origin: [
     "https://deluxetravelexpress.vercel.app",
     "https://www.deluxetravelexpress.com",
-    "https://deluxeexpresstravel.com",
+    "https://deluxetravelexpress.com",
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5180"
