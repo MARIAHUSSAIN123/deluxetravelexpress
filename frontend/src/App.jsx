@@ -20,10 +20,11 @@ import ScrollToTop from "./components/ScrollToTop";
 import NewsDetail from "./components/pages/NewsDetail";
 import Success from "./components/pages/success";
 import Cancel from "./components/pages/Cancel";
-import DriverPanel from "./components/pages/driver/DriverPanel";
+import DriverPanel from "./components/pages/driver/DriverRoute";
 import PaymentSuccess from "./components/pages/PaymentSuccess";
 import PaymentCancel from "./components/pages/PaymentCancel";
 import "./App.css";
+import DriverRoute from "./components/pages/driver/DriverRoute";
 
 function Home() {
   return (
@@ -57,7 +58,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/ticket" element={<Ticket />} />
         <Route path="/news/:id" element={<NewsDetail />} />
-        <Route path="/driver" element={<DriverPanel />}  />
+        <Route path="/driver" element={<DriverRoute><DriverPanel /></DriverRoute>} />
         <Route
   path="/payment-success"
   element={<PaymentSuccess />}

@@ -1,92 +1,40 @@
 import "./RouteCard.css";
+import { useContext } from "react";
+import { LanguageContext } from "../../context/LanguageContext";
+import translations from "../../translations";
 
-const RouteCard = ({
-  from,
-  to,
-  price,
-  trips,
-  duration,
-  image,
-  disabled,
-  openSchedules,
-}) => {
+const RouteCard = ({ from, to, price, trips, duration, image, disabled, openSchedules }) => {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language] || translations.en;
 
   return (
-
     <div className="route-card">
-
-      {/* IMAGE */}
-      <img
-        src={image}
-        alt={`${from} to ${to}`}
-        className="route-card-img"
-      />
-
-      {/* OVERLAY */}
+      <img src={image} alt={`${from} to ${to}`} className="route-card-img" />
       <div className="route-overlay"></div>
-
-      {/* CONTENT */}
       <div className="route-card-content">
 
-        <h2>
-          {from}
-          {" "}
-          <span>→</span>
-          {" "}
-          {to}
-        </h2>
+        <h2>{from} <span>→</span> {to}</h2>
+        <h3>${price} CAD</h3>
 
-        <h3>
-          ${price} CAD
-        </h3>
-
-        {/* TIMINGS */}
         <div className="route-times">
-
           {trips.map((time, index) => (
-
-            <p
-              key={index}
-              className="trip-time"
-            >
-             🚗 {time}
-            </p>
-
+            <p key={index} className="trip-time">🚗 {time}</p>
           ))}
-
         </div>
 
-        {/* DURATION */}
         <div className="route-info">
-
-          <p>
-            ⏱ {duration}
-          </p>
-
+          <p>⏱ {duration}</p>
         </div>
 
-        {/* BUTTON */}
         {disabled ? (
-
-          <button className="coming-btn">
-            Coming Soon
-          </button>
-
+          <button className="coming-btn">{t.comingSoon}</button>
         ) : (
-
-          <button
-            className="route-btn"
-            onClick={() =>
-              openSchedules(from, to)
-            }
-          >
-            VIEW SCHEDULES
+          <button className="route-btn" onClick={() => openSchedules(from, to)}>
+            {t.viewSchedules}
           </button>
-
         )}
 
       </div>
-
     </div>
   );
 };

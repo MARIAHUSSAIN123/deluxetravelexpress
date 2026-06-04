@@ -159,6 +159,52 @@ app.get("/send-reminders", async (req, res) => {
     const targetDate = fourHoursLater.toISOString().split("T")[0];
     const targetHour = fourHoursLater.getHours();
 
+
+    const arrivedBookings = await dbAdmin
+  .collection("bookings")
+  .where("travelStatus", "==", "arrived")
+  .where("thankYouSent", "==", false)
+  .get();
+
+for (const docItem of arrivedBookings.docs) {
+
+  const booking = docItem.data();
+
+  if (!booking.arrivalTime) continue;
+
+  const arrivalTime = new Date(booking.arrivalTime);
+  const now = new Date();
+
+  const diffMinutes =
+    (now - arrivalTime) / (1000 * 60);
+
+  if (diffMinutes >= 30) {
+
+    await transporter.sendMail({
+      from: `"Deluxe Travel Express" <${process.env.EMAIL_USER}>`,
+      to: booking["e-mail"] || booking.email,
+      subject: "Thank You For Travelling With Deluxe Travel Express",
+      html: `
+        <p>Dear ${booking.passengerName},</p>
+
+        <p>We would like to extend our sincere thanks for traveling with Deluxe Travel Express.</p>
+
+        <p>We hope your experience on board met your expectations.</p>
+
+        <p>Sincerely,</p>
+
+        <p><strong>The Deluxe Travel Express Team</strong></p>
+      `,
+    });
+
+    await dbAdmin
+      .collection("bookings")
+      .doc(docItem.id)
+      .update({
+        thankYouSent: true,
+      });
+  }
+}
     const snapshot = await dbAdmin
       .collection("bookings")
       .where("status", "==", "approved")
@@ -166,7 +212,7 @@ app.get("/send-reminders", async (req, res) => {
       .get();
 
     if (snapshot.empty) {
-      return res.json({ message: "No bookings to remind." });
+      return res.json({ message: "No reminder bookings." });
     }
 
     let sent = 0;

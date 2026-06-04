@@ -16,13 +16,13 @@ const TripCard = ({
         <p>{trip.duration}</p>
       </div>
 
-      <div className="schedule-middle">
+      {/* <div className="schedule-middle">
         <SeatIndicator
           seats={
             trip.availableSeats
           }
         />
-      </div>
+      </div> */}
 
       <div className="schedule-right">
         <h4>

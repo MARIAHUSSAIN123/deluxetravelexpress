@@ -7,7 +7,7 @@ import {
   addDoc,
   doc,
   updateDoc,
-  increment,
+  increment,getDoc
 } from "firebase/firestore";
 
 import { db } from "../../firebase";
@@ -72,21 +72,65 @@ const PaymentSuccess = () => {
         // UPDATE MAIN TRIP SEATS
         // =======================
 
-        if (booking.tripId) {
-          await updateDoc(doc(db, "trips", booking.tripId), {
-            availableSeats: increment(-Number(booking.passengers)),
-          });
-        }
+       if (booking.tripId) {
+
+  const tripRef = doc(db, "trips", booking.tripId);
+
+  await updateDoc(tripRef, {
+    availableSeats: increment(-Number(booking.passengers)),
+  });
+
+  const updatedTrip = await getDoc(tripRef);
+  const tripData = updatedTrip.data();
+
+  if (tripData.availableSeats <= 0) {
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_ADMIN_TEMPLATE,
+      {
+        to_email: ADMIN_EMAIL,
+        name: "Trip Fully Booked",
+        message: `🚨 Trip ${tripData.from} → ${tripData.to} is now FULLY BOOKED`,
+      },
+      EMAILJS_PUBLIC_KEY
+    );
+
+    console.log("FULLY BOOKED EMAIL SENT");
+  }
+}
 
         // =======================
         // UPDATE RETURN TRIP SEATS
         // =======================
 
-        if (booking.isRoundTrip && booking.returnTrip?.id) {
-          await updateDoc(doc(db, "trips", booking.returnTrip.id), {
-            availableSeats: increment(-Number(booking.passengers)),
-          });
-        }
+      if (booking.isRoundTrip && booking.returnTrip?.id) {
+
+  const returnRef = doc(db, "trips", booking.returnTrip.id);
+
+  await updateDoc(returnRef, {
+    availableSeats: increment(-Number(booking.passengers)),
+  });
+
+  const updatedReturn = await getDoc(returnRef);
+  const returnData = updatedReturn.data();
+
+  if (returnData.availableSeats <= 0) {
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_ADMIN_TEMPLATE,
+      {
+        to_email: ADMIN_EMAIL,
+        name: "Return Trip Fully Booked",
+        message: `🚨 Return Trip ${returnData.from} → ${returnData.to} is now FULLY BOOKED`,
+      },
+      EMAILJS_PUBLIC_KEY
+    );
+
+    console.log("RETURN TRIP FULL EMAIL SENT");
+  }
+}
 
         // =======================
         // USER CONFIRMATION EMAIL

@@ -54,7 +54,9 @@ const DriverPanel = () => {
 
       // UPDATE FIRESTORE
       await updateDoc(doc(db, "bookings", booking.id), {
-        travelStatus: status,
+        travelStatus:status,
+        arrivalTime:status==="arrived"?new Date().toISOString():booking.arrivalTime||null,
+        thankYouSent:status==="arrived"? false:booking.thankYouSent || false,
       });
 
       console.log("STATUS UPDATED:", status);

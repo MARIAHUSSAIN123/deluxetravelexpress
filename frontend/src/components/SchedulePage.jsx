@@ -41,8 +41,8 @@ const SchedulePage = () => {
 
       times: [
         "07:00 AM",
-        "12:00 PM",
-        "05:00 PM",
+        "09:00 AM",
+        "03:00 PM",
         "05:00 PM"
       ],
 

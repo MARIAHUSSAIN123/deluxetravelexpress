@@ -1251,3 +1251,12 @@
   flex: 1;
   height: 56px;
 }
+.trip-details-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.return-seat-box {
+  margin-top: 10px;
+}

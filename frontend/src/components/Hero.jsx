@@ -264,10 +264,10 @@ const Hero = () => {
           disabled={!bookingData.origin || !bookingData.destination}
         >
           <option value="">
-            {!bookingData.origin || !bookingData.destination
-              ? "Select Origin & Destination First"
-              : "Select Departure Time"}
-          </option>
+  {!bookingData.origin || !bookingData.destination
+    ? t.selectOriginFirst
+    : t.selectDepartureTime}
+</option>
           {getDepartureTimes().map((time) => (
             <option key={time} value={time}>{time}</option>
           ))}
@@ -294,10 +294,10 @@ const Hero = () => {
               disabled={!bookingData.origin || !bookingData.destination}
             >
               <option value="">
-                {!bookingData.origin || !bookingData.destination
-                  ? "Select Origin & Destination First"
-                  : "Select Return Time"}
-              </option>
+  {!bookingData.origin || !bookingData.destination
+    ? t.selectOriginFirst
+    : t.selectReturnTime}
+</option>
               {getReturnTimes().map((time) => (
                 <option key={time} value={time}>{time}</option>
               ))}

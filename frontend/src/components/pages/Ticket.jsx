@@ -16,7 +16,6 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import {
   collection,
   getDocs,
-  
 } from "firebase/firestore";
 
 import { db } from "../../firebase";
@@ -29,9 +28,6 @@ import { LanguageContext } from "../../context/LanguageContext";
 
 import translations from "../../translations";
 
-// =======================
-// STRIPE
-// =======================
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLIC_KEY
 );
@@ -40,9 +36,6 @@ const Ticket = () => {
   const { language } = useContext(LanguageContext);
   const t = translations[language] || translations.en;
 
-  // ======================
-  // STATES
-  // ======================
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRoute, setSelectedRoute] = useState(null);
@@ -52,32 +45,20 @@ const Ticket = () => {
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingStep, setBookingStep] = useState(1);
 
-  // ======================
-  // FORM STATES
-  // ======================
   const [passengerName, setPassengerName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [passengers, setPassengers] = useState(1);
 
-  // ======================
-  // DATE STATES
-  // ======================
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [isRoundTrip, setIsRoundTrip] = useState(false);
 
-  // ======================
-  // TODAY DATE
-  // ======================
   const today = new Date();
   today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
   const minDate = today.toISOString().split("T")[0];
 
-  // ======================
-  // FETCH TRIPS
-  // ======================
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -103,9 +84,6 @@ const Ticket = () => {
     fetchTrips();
   }, []);
 
-  // ======================
-  // MODAL BODY FIX
-  // ======================
   useEffect(() => {
     if (showBooking) {
       document.body.classList.add("modal-open");
@@ -115,9 +93,6 @@ const Ticket = () => {
     return () => document.body.classList.remove("modal-open");
   }, [showBooking]);
 
-  // ======================
-  // OPEN ROUTE
-  // ======================
   const openSchedules = (from, to) => {
     setSelectedRoute({ from, to });
     setTimeout(() => {
@@ -128,9 +103,6 @@ const Ticket = () => {
     }, 150);
   };
 
-  // ======================
-  // FILTER ROUTE TRIPS
-  // ======================
   const getRouteTrips = () => {
     if (!selectedRoute) return [];
     return trips.filter(
@@ -141,9 +113,6 @@ const Ticket = () => {
     );
   };
 
-  // ======================
-  // OPEN BOOKING
-  // ======================
   const handleSelectTrip = (trip, selectedDate) => {
     if (!selectedDate) {
       Swal.fire({
@@ -159,9 +128,6 @@ const Ticket = () => {
     setBookingStep(1);
   };
 
-  // ======================
-  // CLOSE MODAL
-  // ======================
   const closeBookingModal = () => {
     setShowBooking(false);
     setPassengerName("");
@@ -176,9 +142,6 @@ const Ticket = () => {
     setBookingStep(1);
   };
 
-  // ======================
-  // STEP VALIDATION
-  // ======================
   const validateStepOne = () => {
     if (!departureDate) {
       Swal.fire({ icon: "warning", title: "Departure Date Required", text: "Please select departure date" });
@@ -199,21 +162,14 @@ const Ticket = () => {
     return true;
   };
 
-  // ======================
-  // CONFIRM BOOKING
-  // ======================
   const confirmBooking = async () => {
-
-    // STEP 1 VALIDATION
     if (!validateStepOne()) return;
 
-    // FIELDS VALIDATION
     if (!passengerName || !email || !phone || !address) {
       Swal.fire({ icon: "warning", title: "Missing Fields", text: "Please fill all fields" });
       return;
     }
 
-    // SEATS CHECK
     if (passengers > selectedTrip.availableSeats) {
       Swal.fire({ icon: "warning", title: "Seats Unavailable", text: `Only ${selectedTrip.availableSeats} seats available` });
       return;
@@ -227,73 +183,39 @@ const Ticket = () => {
     setBookingLoading(true);
 
     try {
-
       const totalPrice = isRoundTrip ? 90 * passengers * 2 : 90 * passengers;
 
-      // ======================
-      // SAVE TO LOCALSTORAGE
-      // (PaymentSuccess mein Firestore save hoga)
-      // ======================
-     const bookingData = {
-  bookingId: Date.now().toString(),
+      const bookingData = {
+        bookingId: Date.now().toString(),
+        passengerName,
+        "e-mail": email?.trim(),
+        email: email?.trim(),
+        phone,
+        address,
+        passengers,
+        tripId: selectedTrip.id,
+        from: selectedTrip.from,
+        to: selectedTrip.to,
+        departure: selectedTrip.departure || "",
+        arrival: selectedTrip.arrival || "",
+        duration: selectedTrip.duration || "",
+        departureDate,
+        returnDate: returnDate || "",
+        isRoundTrip,
+        returnTrip: selectedReturnTrip
+          ? {
+              id: selectedReturnTrip.id,
+              from: selectedReturnTrip.from,
+              to: selectedReturnTrip.to,
+              departure: selectedReturnTrip.departure || "",
+              arrival: selectedReturnTrip.arrival || "",
+            }
+          : null,
+        returnTripId: selectedReturnTrip?.id || "",
+        totalPrice,
+      };
 
-  passengerName,
-  "e-mail": email?.trim(),
-  email: email?.trim(),
-
-  phone,
-  address,
-  passengers,
-
-  tripId: selectedTrip.id,
-
-  from: selectedTrip.from,
-  to: selectedTrip.to,
-
-  departure: selectedTrip.departure || "",
-  arrival: selectedTrip.arrival || "",
-
-  duration: selectedTrip.duration || "",
-
-  departureDate,
-
-  returnDate: returnDate || "",
-
-  isRoundTrip,
-
-  returnTrip: selectedReturnTrip
-    ? {
-        id: selectedReturnTrip.id,
-        from: selectedReturnTrip.from,
-        to: selectedReturnTrip.to,
-        departure:
-          selectedReturnTrip.departure || "",
-        arrival:
-          selectedReturnTrip.arrival || "",
-      }
-    : null,
-
-  returnTripId:
-    selectedReturnTrip?.id || "",
-
-  totalPrice,
-};
-
-localStorage.setItem(
-  "pendingBooking",
-  JSON.stringify(bookingData)
-);
-
-console.log(
-  "BOOKING SAVED:",
-  bookingData
-);
-
-      // ======================
-      // UPDATE LOCAL UI ONLY
-      // (Firestore seats PaymentSuccess mein update honge)
-      // ======================
-     
+      localStorage.setItem("pendingBooking", JSON.stringify(bookingData));
 
       Swal.fire({
         icon: "success",
@@ -303,11 +225,8 @@ console.log(
         showConfirmButton: false,
       });
 
-      // ======================
-      // STRIPE REDIRECT
-      // ======================
-   const apiUrl = import.meta.env.VITE_API_URL || "https://deluxetravelexpress-4j89.vercel.app";
-console.log(apiUrl);
+      const apiUrl = import.meta.env.VITE_API_URL || "https://deluxetravelexpress-4j89.vercel.app";
+
       if (!apiUrl) {
         throw new Error("VITE_API_URL is not set in .env file");
       }
@@ -333,8 +252,8 @@ console.log(apiUrl);
       if (!session.url) {
         throw new Error("No redirect URL from Stripe");
       }
-console.log("LOCALSTORAGE CHECK")
-      window.location.href=(session.url);
+
+      window.location.href = session.url;
 
     } catch (error) {
       console.log(error);
@@ -348,9 +267,6 @@ console.log("LOCALSTORAGE CHECK")
     }
   };
 
-  // ======================
-  // UI
-  // ======================
   return (
     <>
       {/* HERO */}
@@ -358,13 +274,13 @@ console.log("LOCALSTORAGE CHECK")
         <img src={carImage} alt="" className="ticket-hero-img" />
         <div className="ticket-hero-overlay" />
         <div className="ticket-hero-content">
-          <p className="ticket-hero-tag">TICKET RESERVATION</p>
-          <h1>Book Your Luxury Journey</h1>
+          <p className="ticket-hero-tag">{t.ticketTag}</p>
+          <h1>{t.ticketHeading}</h1>
           <TypeAnimation
             sequence={[
-              "Experience Comfortable Long Distance Travel", 2000,
-              "Safe & Luxury Travel Experience", 2000,
-              "Premium Rides Across Canada", 2000,
+              t.ticketAnim1, 2000,
+              t.ticketAnim2, 2000,
+              t.ticketAnim3, 2000,
             ]}
             wrapper="p"
             speed={50}
@@ -391,7 +307,7 @@ console.log("LOCALSTORAGE CHECK")
 
             {/* HEADER */}
             <div className="booking-modal-header">
-              <h2>Complete Reservation</h2>
+              <h2>{t.completeReservation}</h2>
               <button className="modal-close-btn" onClick={closeBookingModal}>✕</button>
             </div>
 
@@ -399,32 +315,39 @@ console.log("LOCALSTORAGE CHECK")
               {selectedTrip.from} {" → "} {selectedTrip.to}
             </p>
 
+            {/* TRIP DETAILS */}
             <div className="trip-details">
-              <p>Departure: <span>{selectedTrip.departure}</span></p>
-              <p>Arrival: <span>{selectedTrip.arrival}</span></p>
+              <div className="trip-details-row">
+                <div>
+                  <p>{t.departure}: <span>{selectedTrip.departure}</span></p>
+                  <p>{t.arrival}: <span>{selectedTrip.arrival}</span></p>
+                </div>
+                <div className="seat-left-box">
+                  🟡 {selectedTrip.availableSeats} {t.seatsRemaining}
+                </div>
+              </div>
             </div>
 
-            {/* STEP 1 — TRIP OPTIONS */}
+            {/* STEP 1 */}
             {bookingStep === 1 && (
               <>
-                {/* TRIP TYPE */}
                 <div className="trip-type-ticket">
                   <button
                     className={!isRoundTrip ? "active-trip-btn" : ""}
                     onClick={() => setIsRoundTrip(false)}
                   >
-                    One Way
+                    {t.oneWay}
                   </button>
                   <button
                     className={isRoundTrip ? "active-trip-btn" : ""}
                     onClick={() => setIsRoundTrip(true)}
                   >
-                    Round Trip
+                    {t.roundTrip}
                   </button>
                 </div>
- {/* PASSENGERS */}
- <div className="passenger-select">
-                  <label>Number Of Passengers</label>
+
+                <div className="passenger-select">
+                  <label>{t.numberOfPassengers}</label>
                   <select
                     value={passengers}
                     onChange={(e) => setPassengers(Number(e.target.value))}
@@ -434,12 +357,9 @@ console.log("LOCALSTORAGE CHECK")
                     ))}
                   </select>
                 </div>
-             
 
-               
-                   {/* DEPARTURE DATE */}
                 <div className="date-box">
-                  <label>Departure Date</label>
+                  <label>{t.departureDate}</label>
                   <input
                     type="date"
                     value={departureDate}
@@ -447,10 +367,10 @@ console.log("LOCALSTORAGE CHECK")
                     onChange={(e) => setDepartureDate(e.target.value)}
                   />
                 </div>
-                 {/* RETURN DATE */}
+
                 {isRoundTrip && (
                   <div className="date-box">
-                    <label>Return Date</label>
+                    <label>{t.returnDate}</label>
                     <input
                       type="date"
                       value={returnDate}
@@ -458,21 +378,11 @@ console.log("LOCALSTORAGE CHECK")
                       onChange={(e) => setReturnDate(e.target.value)}
                     />
                   </div>
-                  
-                )}\
-                
-               
-                {/* SEATS */}
-                <div className="seat-left-box">
-                  {selectedTrip.availableSeats} Seats Remaining
-                </div>
-\
-               
+                )}
 
-                {/* RETURN TRIP */}
                 {isRoundTrip && (
                   <div className="return-trip-box">
-                    <label>Select Return Trip</label>
+                    <label>{t.selectReturnTrip}</label>
                     <select
                       value={selectedReturnTrip?.id || ""}
                       onChange={(e) => {
@@ -480,7 +390,7 @@ console.log("LOCALSTORAGE CHECK")
                         setSelectedReturnTrip(foundTrip);
                       }}
                     >
-                      <option value="">Select Return Time</option>
+                      <option value="">{t.selectReturnTime}</option>
                       {trips
                         .filter(
                           (trip) =>
@@ -490,87 +400,91 @@ console.log("LOCALSTORAGE CHECK")
                         )
                         .map((trip) => (
                           <option key={trip.id} value={trip.id}>
-                            {trip.departure} {" → "} {trip.arrival} {" | "} {trip.availableSeats} seats
+                            {trip.departure} {" → "} {trip.arrival} {" | "} {trip.availableSeats} {t.seat}
                           </option>
                         ))}
                     </select>
+
+                    {selectedReturnTrip && (
+                      <div className="seat-left-box return-seat-box">
+                        🟡 {selectedReturnTrip.availableSeats} {t.seatsRemainingReturn}
+                      </div>
+                    )}
                   </div>
                 )}
 
-                {/* TOTAL */}
                 <h3 className="booking-total">
-                  Total: ${isRoundTrip ? 90 * passengers * 2 : 90 * passengers}
+                  {t.total}: ${isRoundTrip ? 90 * passengers * 2 : 90 * passengers}
                 </h3>
 
-                {/* NEXT BUTTON */}
                 <button
                   className="next-step-btn"
                   onClick={() => {
                     if (validateStepOne()) setBookingStep(2);
                   }}
                 >
-                  Next →
+                  {t.next}
                 </button>
               </>
             )}
 
-            {/* STEP 2 — PASSENGER INFO */}
+            {/* STEP 2 */}
             {bookingStep === 2 && (
               <>
                 <div className="form-group">
-                  <label>Full Name</label>
+                  <label>{t.fullName}</label>
                   <input
                     type="text"
-                    placeholder="Enter full name"
+                    placeholder={t.enterFullName}
                     value={passengerName}
                     onChange={(e) => setPassengerName(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>Email</label>
+                  <label>{t.emailLabel}</label>
                   <input
                     type="email"
-                    placeholder="Enter email"
+                    placeholder={t.enterEmailLabel}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>Phone</label>
+                  <label>{t.phoneLabel}</label>
                   <input
                     type="tel"
-                    placeholder="Enter phone number"
+                    placeholder={t.enterPhoneLabel}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>Address</label>
+                  <label>{t.addressLabel}</label>
                   <input
                     type="text"
-                    placeholder="Enter address"
+                    placeholder={t.enterAddressLabel}
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
 
                 <h3 className="booking-total">
-                  Total: ${isRoundTrip ? 90 * passengers * 2 : 90 * passengers}
+                  {t.total}: ${isRoundTrip ? 90 * passengers * 2 : 90 * passengers}
                 </h3>
 
                 <div className="modal-buttons">
                   <button className="back-step-btn" onClick={() => setBookingStep(1)}>
-                    ← Back
+                    {t.back}
                   </button>
                   <button
                     className="confirm-btn"
                     onClick={confirmBooking}
                     disabled={bookingLoading}
                   >
-                    {bookingLoading ? "Processing..." : "Confirm & Pay"}
+                    {bookingLoading ? t.processing : t.confirmPay}
                   </button>
                 </div>
               </>

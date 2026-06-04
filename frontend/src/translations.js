@@ -42,6 +42,47 @@ const translations = {
     bookNowBtn: "Book Now",
     comingSoon: "Coming Soon",
 
+    // TICKET PAGE
+ticketTag: "TICKET RESERVATION",
+ticketHeading: "Book Your Luxury Journey",
+ticketAnim1: "Experience Comfortable Long Distance Travel",
+ticketAnim2: "Safe & Luxury Travel Experience",
+ticketAnim3: "Premium Rides Across Canada",
+completeReservation: "Complete Reservation",
+seatsRemaining: "Seats Remaining",
+seatsRemainingReturn: "Seats Remaining (Return)",
+oneWay: "One Way",
+roundTrip: "Round Trip",
+numberOfPassengers: "Number Of Passengers",
+departureDate: "Departure Date",
+returnDate: "Return Date",
+selectReturnTrip: "Select Return Trip",
+selectReturnTime: "Select Return Time",
+total: "Total",
+next: "Next →",
+fullName: "Full Name",
+enterFullName: "Enter full name",
+emailLabel: "Email",
+enterEmailLabel: "Enter email",
+phoneLabel: "Phone",
+enterPhoneLabel: "Enter phone number",
+addressLabel: "Address",
+enterAddressLabel: "Enter address",
+back: "← Back",
+confirmPay: "Confirm & Pay",
+processing: "Processing...",
+departure: "Departure",
+arrival: "Arrival",
+
+// DAILY RESERVATIONS & ROUTE CARD
+dailyTag: "DAILY RESERVATIONS",
+selectTravelDate: "Select Travel Date",
+selectDateFirst: "Please select travel date first",
+duration: "Duration",
+travelDate: "Travel Date",
+soldOut: "SOLD OUT",
+buyTicket: "BUY TICKET",
+viewSchedules: "VIEW SCHEDULES",
     // ROUTES
     calgary: "Calgary",
     edmonton: "Edmonton",
@@ -93,6 +134,20 @@ const translations = {
     address: "Address",
     status: "Status",
     activeRoute: "Active Route",
+    // ABOUT PAGE
+aboutTag: "PREMIUM INTERCITY EXPERIENCE",
+aboutHeading: "Experience Luxury Beyond The Journey",
+aboutText1: "Deluxe Travel Express delivers a refined travel experience for passengers who value comfort, elegance, and reliability. Every trip is carefully designed to make long-distance travel feel smooth, relaxing, and stress-free.",
+aboutText2: "Our premium SUV fleet combines luxury interiors, spacious seating, and modern amenities with professional chauffeur service — creating a first-class experience from departure to destination.",
+aboutText3: "Whether you're traveling for business or leisure, we ensure every mile reflects the quality, sophistication, and care that define Deluxe Travel Express.",
+aboutCard1Title: "Luxury SUV Fleet",
+aboutCard1Text: "Premium vehicles with spacious seating, elegant interiors, and advanced comfort features for a superior journey.",
+aboutCard2Title: "Professional Chauffeurs",
+aboutCard2Text: "Experienced drivers committed to safe, smooth, and punctual travel with exceptional customer care.",
+aboutCard3Title: "Reliable Scheduling",
+aboutCard3Text: "Consistent and dependable departures designed to keep your travel experience convenient and stress-free.",
+aboutCard4Title: "Modern Travel Comfort",
+aboutCard4Text: "Enjoy a peaceful atmosphere with refined interiors, smooth rides, and premium onboard comfort.",
 
     // NEWS
     newsTag: "DELUXE TRAVEL EXPRESS",
@@ -163,10 +218,30 @@ const translations = {
     enterCity: "Enter city",
     enterCountry: "Enter country",
     createAccount: "CREATE ACCOUNT",
+    // NEWS DETAIL PAGE
+newsCard1FullDesc: "Luxury airport pickup and drop-off services are now available for additional premium locations. Customers can now enjoy more comfort, reliability, and a first-class travel experience with Deluxe Travel Express.",
+newsCard2FullDesc: "Our fleet now includes additional premium SUVs featuring spacious interiors, modern comfort, luxury seating, and enhanced passenger experience for long-distance travel.",
+newsCard3FullDesc: "New premium intercity routes are being introduced to improve luxury travel accessibility between major cities with more comfort and convenience.",
+featuredNewsFullDesc: "Deluxe Travel Express proudly introduces a premium SUV route designed for travelers seeking comfort, reliability, and luxury between Calgary and Edmonton.",
+newsDetailHeading: "Luxury Travel Experience",
+newsDetailP1: "Deluxe Travel Express continues to redefine premium transportation by delivering luxury, comfort, and reliability for passengers traveling between major cities.",
+newsDetailP2: "Our mission is to provide a smooth and elegant travel experience with modern vehicles, professional drivers, and premium customer support.",
+whyChooseUs: "Why Choose Us?",
+feature1: "✔ Premium Luxury Vehicles",
+feature2: "✔ Comfortable Long Routes",
+feature3: "✔ Airport Pickup Services",
+feature4: "✔ Professional Drivers",
+feature5: "✔ Affordable Luxury Travel",
+bookYourTrip: "Book Your Trip",
+
+seat: "Seat",
+seats: "Seats",
+selectOriginFirst: "Select Origin & Destination First",
+selectDepartureTime: "Select Departure Time",
+selectReturnTime: "Select Return Time",
+
   },
-
-
-
+  
   // ================= FRENCH =================
   fr: {
 
@@ -180,6 +255,17 @@ const translations = {
     contact: "Contact",
     signup: "S'inscrire",
 
+
+    // DAILY RESERVATIONS & ROUTE CARD
+dailyTag: "RÉSERVATIONS QUOTIDIENNES",
+selectTravelDate: "Sélectionnez la Date de Voyage",
+selectDateFirst: "Veuillez d'abord sélectionner la date de voyage",
+duration: "Durée",
+travelDate: "Date de Voyage",
+soldOut: "ÉPUISÉ",
+buyTicket: "ACHETER UN BILLET",
+viewSchedules: "VOIR LES HORAIRES",
+
     // HERO
     heroSlogan: "Voyagez avec Élégance Pure",
     heroText: "Voyages SUV de luxe avec confort, sécurité et élégance",
@@ -189,6 +275,11 @@ const translations = {
     oneWay: "Aller Simple",
     roundTrip: "Aller-Retour",
     bookNow: "RÉSERVER →",
+    seat: "Siège",
+seats: "Sièges",
+selectOriginFirst: "Sélectionnez l'Origine et la Destination d'abord",
+selectDepartureTime: "Sélectionnez l'Heure de Départ",
+selectReturnTime: "Sélectionnez l'Heure de Retour",
 
     // SCHEDULE
     carSchedules: "Horaires des Véhicules",
@@ -328,7 +419,68 @@ const translations = {
     enterCity: "Entrez la ville",
     enterCountry: "Entrez le pays",
     createAccount: "CRÉER UN COMPTE",
+    // news detail page
+    // NEWS DETAIL PAGE
+newsCard1FullDesc: "Les services de ramassage et de dépôt aéroportuaires de luxe sont désormais disponibles pour des emplacements premium supplémentaires. Les clients peuvent profiter de plus de confort, fiabilité et d'une expérience de voyage première classe.",
+newsCard2FullDesc: "Notre flotte comprend maintenant des SUV premium supplémentaires avec des intérieurs spacieux, un confort moderne, des sièges luxueux et une expérience passager améliorée.",
+newsCard3FullDesc: "De nouvelles routes intercités premium sont introduites pour améliorer l'accessibilité aux voyages de luxe entre les grandes villes avec plus de confort.",
+featuredNewsFullDesc: "Deluxe Travel Express introduit fièrement une route SUV premium conçue pour les voyageurs recherchant confort, fiabilité et luxe entre Calgary et Edmonton.",
+newsDetailHeading: "Expérience de Voyage Luxueuse",
+newsDetailP1: "Deluxe Travel Express continue de redéfinir le transport premium en offrant luxe, confort et fiabilité pour les passagers voyageant entre les grandes villes.",
+newsDetailP2: "Notre mission est de fournir une expérience de voyage fluide et élégante avec des véhicules modernes, des chauffeurs professionnels et un support client premium.",
+whyChooseUs: "Pourquoi Nous Choisir?",
+feature1: "✔ Véhicules de Luxe Premium",
+feature2: "✔ Longues Routes Confortables",
+feature3: "✔ Services de Ramassage Aéroportuaire",
+feature4: "✔ Chauffeurs Professionnels",
+feature5: "✔ Voyage de Luxe Abordable",
+bookYourTrip: "Réservez Votre Voyage",
+// ABOUT PAGE
+aboutTag: "EXPÉRIENCE INTERURBAINE PREMIUM",
+aboutHeading: "Vivez le Luxe Au-Delà du Voyage",
+aboutText1: "Deluxe Travel Express offre une expérience de voyage raffinée pour les passagers qui valorisent le confort, l'élégance et la fiabilité. Chaque voyage est soigneusement conçu pour rendre les longs trajets fluides, relaxants et sans stress.",
+aboutText2: "Notre flotte SUV premium combine des intérieurs luxueux, des sièges spacieux et des commodités modernes avec un service de chauffeur professionnel — créant une expérience première classe du départ à la destination.",
+aboutText3: "Que vous voyagiez pour affaires ou pour le plaisir, nous veillons à ce que chaque kilomètre reflète la qualité, la sophistication et le soin qui définissent Deluxe Travel Express.",
+aboutCard1Title: "Flotte SUV de Luxe",
+aboutCard1Text: "Véhicules premium avec sièges spacieux, intérieurs élégants et caractéristiques de confort avancées pour un voyage supérieur.",
+aboutCard2Title: "Chauffeurs Professionnels",
+aboutCard2Text: "Conducteurs expérimentés engagés pour un voyage sûr, fluide et ponctuel avec un service client exceptionnel.",
+aboutCard3Title: "Horaires Fiables",
+aboutCard3Text: "Des départs constants et fiables conçus pour rendre votre expérience de voyage pratique et sans stress.",
+aboutCard4Title: "Confort de Voyage Moderne",
+aboutCard4Text: "Profitez d'une atmosphère paisible avec des intérieurs raffinés, des trajets fluides et un confort premium à bord.",
+
+// TICKET PAGE
+ticketTag: "RÉSERVATION DE BILLET",
+ticketHeading: "Réservez Votre Voyage de Luxe",
+ticketAnim1: "Profitez d'un Voyage Longue Distance Confortable",
+ticketAnim2: "Expérience de Voyage Sûre et Luxueuse",
+ticketAnim3: "Trajets Premium à Travers le Canada",
+completeReservation: "Compléter la Réservation",
+seatsRemaining: "Sièges Restants",
+seatsRemainingReturn: "Sièges Restants (Retour)",
+numberOfPassengers: "Nombre de Passagers",
+departureDate: "Date de Départ",
+returnDate: "Date de Retour",
+selectReturnTrip: "Sélectionner le Trajet Retour",
+selectReturnTime: "Sélectionner l'Heure de Retour",
+total: "Total",
+next: "Suivant →",
+fullName: "Nom Complet",
+enterFullName: "Entrez le nom complet",
+emailLabel: "E-mail",
+enterEmailLabel: "Entrez l'e-mail",
+phoneLabel: "Téléphone",
+enterPhoneLabel: "Entrez le numéro de téléphone",
+addressLabel: "Adresse",
+enterAddressLabel: "Entrez l'adresse",
+back: "← Retour",
+confirmPay: "Confirmer & Payer",
+processing: "Traitement...",
+departure: "Départ",
+arrival: "Arrivée",
   }
+  
 };
 
 export default translations;

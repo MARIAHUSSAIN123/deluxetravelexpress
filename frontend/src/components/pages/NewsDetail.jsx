@@ -1,45 +1,41 @@
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { LanguageContext } from "../../context/LanguageContext";
+import translations from "../../translations";
 
 function NewsDetail() {
   const { id } = useParams();
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { language } = useContext(LanguageContext);
+  const t = translations[language] || translations.en;
+
   const newsData = {
     1: {
-      title: "Premium Airport Pickup Service Expanded",
-      date: "April 2026",
-      desc:
-        "Luxury airport pickup and drop-off services are now available for additional premium locations. Customers can now enjoy more comfort, reliability, and a first-class travel experience with Deluxe Travel Express.",
-      image:
-        "https://i.pinimg.com/736x/26/f0/ce/26f0ced629a60a17c08b7d55ce882be3.jpg",
+      title: t.featuredNewsTitle,
+      date: t.may2026,
+      desc: t.featuredNewsFullDesc,
+      image: "https://i.pinimg.com/1200x/3f/b2/9f/3fb29f0f32da1bdecff7b6c881a79fc9.jpg",
     },
-
     2: {
-      title: "New Luxury SUV Fleet Added",
-      date: "March 2026",
-      desc:
-        "Our fleet now includes additional premium SUVs featuring spacious interiors, modern comfort, luxury seating, and enhanced passenger experience for long-distance travel.",
-      image:
-        "https://i.pinimg.com/1200x/69/9a/5f/699a5ff83b850b255e088f305fa91d30.jpg",
+      title: t.newsCard1Title,
+      date: t.april2026,
+      desc: t.newsCard1FullDesc,
+      image: "https://i.pinimg.com/736x/26/f0/ce/26f0ced629a60a17c08b7d55ce882be3.jpg",
     },
-
     3: {
-      title: "Deluxe Travel Expands Intercity Routes",
-      date: "February 2026",
-      desc:
-        "New premium intercity routes are being introduced to improve luxury travel accessibility between major cities with more comfort and convenience.",
-      image:
-        "https://i.pinimg.com/1200x/91/c3/24/91c324456cf8698f53fbaba83e506471.jpg",
+      title: t.newsCard2Title,
+      date: t.march2026,
+      desc: t.newsCard2FullDesc,
+      image: "https://i.pinimg.com/1200x/69/9a/5f/699a5ff83b850b255e088f305fa91d30.jpg",
     },
     4: {
-  title: "Deluxe Travel Launches New Calgary Luxury Route",
-  date: "May 2026",
-  desc:
-    "Deluxe Travel Express proudly introduces a premium SUV route designed for travelers seeking comfort, reliability, and luxury between Calgary and Edmonton.",
-  image:
-    "https://i.pinimg.com/1200x/3f/b2/9f/3fb29f0f32da1bdecff7b6c881a79fc9.jpg",
-},
+      title: t.newsCard3Title,
+      date: t.feb2026,
+      desc: t.newsCard3FullDesc,
+      image: "https://i.pinimg.com/1200x/91/c3/24/91c324456cf8698f53fbaba83e506471.jpg",
+    },
   };
 
   const news = newsData[id];
@@ -73,7 +69,6 @@ const navigate = useNavigate();
             objectFit: "cover",
           }}
         />
-
         <div
           style={{
             position: "absolute",
@@ -82,7 +77,6 @@ const navigate = useNavigate();
               "linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.2))",
           }}
         />
-
         <div
           style={{
             position: "absolute",
@@ -101,7 +95,6 @@ const navigate = useNavigate();
           >
             ● {news.date}
           </p>
-
           <h1
             style={{
               fontSize: "58px",
@@ -112,7 +105,6 @@ const navigate = useNavigate();
           >
             {news.title}
           </h1>
-
           <p
             style={{
               color: "#d7d7d7",
@@ -142,40 +134,18 @@ const navigate = useNavigate();
             border: "1px solid rgba(212,175,55,0.12)",
           }}
         >
-          <h2
-            style={{
-              fontSize: "32px",
-              marginBottom: "25px",
-            }}
-          >
-            Luxury Travel Experience
+          <h2 style={{ fontSize: "32px", marginBottom: "25px" }}>
+            {t.newsDetailHeading}
           </h2>
-
-          <p
-            style={{
-              color: "#cfcfcf",
-              lineHeight: "2",
-              marginBottom: "25px",
-            }}
-          >
-            Deluxe Travel Express continues to redefine premium transportation
-            by delivering luxury, comfort, and reliability for passengers
-            traveling between major cities.
+          <p style={{ color: "#cfcfcf", lineHeight: "2", marginBottom: "25px" }}>
+            {t.newsDetailP1}
           </p>
-
-          <p
-            style={{
-              color: "#cfcfcf",
-              lineHeight: "2",
-            }}
-          >
-            Our mission is to provide a smooth and elegant travel experience
-            with modern vehicles, professional drivers, and premium customer
-            support.
+          <p style={{ color: "#cfcfcf", lineHeight: "2" }}>
+            {t.newsDetailP2}
           </p>
         </div>
 
-        {/* RIGHT CARD */}
+        {/* RIGHT */}
         <div
           style={{
             background: "#111",
@@ -185,47 +155,33 @@ const navigate = useNavigate();
             height: "fit-content",
           }}
         >
-          <h3
-            style={{
-              fontSize: "26px",
-              marginBottom: "25px",
-            }}
-          >
-            Why Choose Us?
+          <h3 style={{ fontSize: "26px", marginBottom: "25px" }}>
+            {t.whyChooseUs}
           </h3>
-
-          <div
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+            <div>{t.feature1}</div>
+            <div>{t.feature2}</div>
+            <div>{t.feature3}</div>
+            <div>{t.feature4}</div>
+            <div>{t.feature5}</div>
+          </div>
+          <button
+            onClick={() => navigate("/ticket")}
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "18px",
+              marginTop: "35px",
+              width: "100%",
+              padding: "16px",
+              border: "none",
+              borderRadius: "14px",
+              background: "linear-gradient(45deg, #d4af37, #ffd700)",
+              color: "black",
+              fontWeight: "800",
+              fontSize: "16px",
+              cursor: "pointer",
             }}
           >
-            <div>✔ Premium Luxury Vehicles</div>
-            <div>✔ Comfortable Long Routes</div>
-            <div>✔ Airport Pickup Services</div>
-            <div>✔ Professional Drivers</div>
-            <div>✔ Affordable Luxury Travel</div>
-          </div>
-
-         <button
-  onClick={() => navigate("/ticket")}
-  style={{
-    marginTop: "35px",
-    width: "100%",
-    padding: "16px",
-    border: "none",
-    borderRadius: "14px",
-    background:
-      "linear-gradient(45deg, #d4af37, #ffd700)",
-    color: "black",
-    fontWeight: "800",
-    fontSize: "16px",
-    cursor: "pointer",
-  }}
->
-  Book Your Trip
-</button>
+            {t.bookYourTrip}
+          </button>
         </div>
       </div>
     </section>

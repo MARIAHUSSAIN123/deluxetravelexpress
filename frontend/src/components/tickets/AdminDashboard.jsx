@@ -20,10 +20,6 @@ import Swal from "sweetalert2";
 
 import emailjs from "@emailjs/browser";
 
-// =======================
-// EMAILJS CONFIG
-// =======================
-
 const EMAILJS_SERVICE_ID = "service_w54sho2";
 const EMAILJS_USER_TEMPLATE = "template_w8jlcvg";
 const EMAILJS_DRIVER_TEMPLATE = "template_w8jlcvg";
@@ -38,10 +34,6 @@ const AdminDashboard = () => {
   const [tripsCount, setTripsCount] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [search, setSearch] = useState("");
-
-  // =======================
-  // FETCH DATA
-  // =======================
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -77,10 +69,6 @@ const AdminDashboard = () => {
     fetchDashboardData();
   }, []);
 
-  // =======================
-  // RESET SEATS
-  // =======================
-
   const resetAllSeats = async () => {
     try {
       const tripsSnapshot = await getDocs(collection(db, "trips"));
@@ -95,17 +83,11 @@ const AdminDashboard = () => {
     }
   };
 
-  // =======================
-  // UPDATE STATUS
-  // =======================
-
   const updateBookingStatus = async (booking, status) => {
     try {
       await updateDoc(doc(db, "bookings", booking.id), { status });
 
       if (status === "approved") {
-
-        // USER EMAIL
         await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_USER_TEMPLATE,
@@ -124,7 +106,6 @@ const AdminDashboard = () => {
           EMAILJS_PUBLIC_KEY
         );
 
-        // DRIVER EMAIL
         await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_DRIVER_TEMPLATE,
@@ -145,7 +126,6 @@ const AdminDashboard = () => {
         );
       }
 
-      // UPDATE UI
       setBookings(bookings.map((item) =>
         item.id === booking.id ? { ...item, status } : item
       ));
@@ -158,21 +138,18 @@ const AdminDashboard = () => {
     }
   };
 
-  // =======================
-  // FILTERED BOOKINGS
-  // =======================
-
   const filteredBookings = bookings.filter((booking) =>
     booking.passengerName?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // =======================
-  // LOADING
-  // =======================
-
   if (loading) {
     return <div className="loading-text">Loading Dashboard...</div>;
   }
+
+  const tdStyle = {
+    verticalAlign: "middle",
+    padding: "14px 22px",
+  };
 
   return (
     <div className="admin-bookings-page">
@@ -201,10 +178,7 @@ const AdminDashboard = () => {
         <div className="stat-card"><h3>Revenue</h3><p>${totalRevenue.toLocaleString()}</p></div>
       </div>
 
-      {/* ===================== */}
-      {/* DESKTOP TABLE         */}
-      {/* ===================== */}
-
+      {/* DESKTOP TABLE */}
       <div className="bookings-table-wrapper">
         <table className="bookings-table">
           <thead>
@@ -220,13 +194,15 @@ const AdminDashboard = () => {
           </thead>
           <tbody>
             {filteredBookings.map((booking) => (
-              <tr key={booking.id}>
-                <td>{booking.passengerName}</td>
-                <td>{booking.from} → {booking.to}</td>
-                <td>{booking["e-mail"] || booking.email}</td>
-                <td>{booking.passengers}</td>
-                <td>${booking.totalPrice}</td>
-                <td>
+              <tr key={booking.id} style={{ verticalAlign: "middle" }}>
+
+                <td style={tdStyle}>{booking.passengerName}</td>
+                <td style={tdStyle}>{booking.from} → {booking.to}</td>
+                <td style={tdStyle}>{booking["e-mail"] || booking.email}</td>
+                <td style={tdStyle}>{booking.passengers}</td>
+                <td style={tdStyle}>${booking.totalPrice}</td>
+
+                <td style={tdStyle}>
                   <span className={`status-badge ${
                     booking.status === "approved" ? "status-approved" :
                     booking.status === "rejected" ? "status-rejected" :
@@ -235,32 +211,36 @@ const AdminDashboard = () => {
                     {booking.status || "pending"}
                   </span>
                 </td>
-                <td>
+
+                <td style={{ verticalAlign: "middle",padding: "14px 18px",minWidth: "180px" }} className="actions-cell">
                   <div className="booking-actions">
-                    <button className="approve-btn" onClick={() => updateBookingStatus(booking, "approved")}>
+                    <button
+                      className="approve-btn"
+                      onClick={() => updateBookingStatus(booking, "approved")}
+                    >
                       Approve
                     </button>
-                    <button className="reject-btn" onClick={() => updateBookingStatus(booking, "rejected")}>
+                    <button
+                      className="reject-btn"
+                      onClick={() => updateBookingStatus(booking, "rejected")}
+                    >
                       Reject
                     </button>
                   </div>
                 </td>
+
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* ===================== */}
-      {/* MOBILE CARDS          */}
-      {/* ===================== */}
-
+      {/* MOBILE CARDS */}
       <div className="mobile-bookings">
         {filteredBookings.map((booking) => (
           <div key={booking.id} className="mobile-booking-card">
 
             <h3>{booking.passengerName}</h3>
-
             <p>🛣️ Route: <span>{booking.from} → {booking.to}</span></p>
             <p>📧 Email: <span>{booking["e-mail"] || booking.email}</span></p>
             <p>👥 Passengers: <span>{booking.passengers}</span></p>
@@ -277,10 +257,16 @@ const AdminDashboard = () => {
               </span>
 
               <div className="booking-actions">
-                <button className="approve-btn" onClick={() => updateBookingStatus(booking, "approved")}>
+                <button
+                  className="approve-btn"
+                  onClick={() => updateBookingStatus(booking, "approved")}
+                >
                   ✓ Approve
                 </button>
-                <button className="reject-btn" onClick={() => updateBookingStatus(booking, "rejected")}>
+                <button
+                  className="reject-btn"
+                  onClick={() => updateBookingStatus(booking, "rejected")}
+                >
                   ✕ Reject
                 </button>
               </div>
