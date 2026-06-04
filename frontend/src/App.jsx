@@ -20,11 +20,12 @@ import ScrollToTop from "./components/ScrollToTop";
 import NewsDetail from "./components/pages/NewsDetail";
 import Success from "./components/pages/success";
 import Cancel from "./components/pages/Cancel";
-import DriverPanel from "./components/pages/driver/DriverRoute";
 import PaymentSuccess from "./components/pages/PaymentSuccess";
 import PaymentCancel from "./components/pages/PaymentCancel";
+import DriverPanel from "./components/pages/driver/DriverPanel";  // ← DriverPanel.jsx
+import DriverRoute from "./components/pages/driver/DriverRoute";  // ← DriverRoute.jsx
 import "./App.css";
-import DriverRoute from "./components/pages/driver/DriverRoute";
+
 
 function Home() {
   return (
