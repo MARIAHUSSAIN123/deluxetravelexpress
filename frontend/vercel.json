@@ -1,4 +1,11 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "version": 2,
+  "builds": [{ "src": "server.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "server.js" }],
+  "crons": [
+    {
+      "path": "/send-reminders",
+      "schedule": "*/30 * * * *"
+    }
+  ]
 }
