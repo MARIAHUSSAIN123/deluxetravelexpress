@@ -13,7 +13,7 @@ const stripe = require("stripe")(
 // FIREBASE ADMIN
 // =====================
 
-let dbAdmin;
+let dbAdmin; 
 
 try {
   if (!admin.apps.length) {
