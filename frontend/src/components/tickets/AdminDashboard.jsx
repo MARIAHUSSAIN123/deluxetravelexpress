@@ -12,8 +12,7 @@ const DRIVER_EMAIL = "deluxedrive05@gmail.com";
 
 const TRIPS_CONFIG = {
   "cal-edm": {
-    label: "Calgary → Edmonton",
-    status: "active",
+    label: "Calgary → Edmonton", status: "active",
     trips: [
       { id: "cal-edm-1", label: "Trip 1", time: "07:00 AM" },
       { id: "cal-edm-2", label: "Trip 2", time: "09:00 AM" },
@@ -22,8 +21,7 @@ const TRIPS_CONFIG = {
     ],
   },
   "edm-cal": {
-    label: "Edmonton → Calgary",
-    status: "active",
+    label: "Edmonton → Calgary", status: "active",
     trips: [
       { id: "edm-cal-1", label: "Trip 1", time: "07:00 PM" },
       { id: "edm-cal-2", label: "Trip 2", time: "11:00 AM" },
@@ -32,32 +30,28 @@ const TRIPS_CONFIG = {
     ],
   },
   "ott-tor": {
-    label: "Ottawa → Toronto",
-    status: "coming_soon",
+    label: "Ottawa → Toronto", status: "coming_soon",
     trips: [
       { id: "ott-tor-1", label: "Trip 1", time: "09:00 AM" },
       { id: "ott-tor-2", label: "Trip 2", time: "05:00 PM" },
     ],
   },
   "tor-ott": {
-    label: "Toronto → Ottawa",
-    status: "coming_soon",
+    label: "Toronto → Ottawa", status: "coming_soon",
     trips: [
       { id: "tor-ott-1", label: "Trip 1", time: "08:00 AM" },
       { id: "tor-ott-2", label: "Trip 2", time: "04:00 PM" },
     ],
   },
   "cal-banff": {
-    label: "Calgary → Banff",
-    status: "disabled",
+    label: "Calgary → Banff", status: "disabled",
     trips: [
       { id: "z-disabled-cal-banff-1", label: "Trip 1", time: "08:00 AM" },
       { id: "z-disabled-cal-banff-2", label: "Trip 2", time: "10:00 AM" },
     ],
   },
   "banff-cal": {
-    label: "Banff → Calgary",
-    status: "disabled",
+    label: "Banff → Calgary", status: "disabled",
     trips: [
       { id: "zzz-banff-cal-1", label: "Trip 1", time: "10:00 AM" },
       { id: "zzz-banff-cal-2", label: "Trip 2", time: "02:00 PM" },
@@ -72,6 +66,7 @@ const AdminDashboard = () => {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [showSummary, setShowSummary] = useState(false);
   const [search, setSearch] = useState("");
+  const [selectedDate, setSelectedDate] = useState(""); // ✅ NEW
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -124,18 +119,19 @@ const AdminDashboard = () => {
     }
   };
 
-  const getBookingsForTrip = (tripId) => {
+  // ✅ DATE FILTER SUPPORT
+  const getBookingsForTrip = (tripId, dateFilter = "") => {
     const routeKey = Object.keys(TRIPS_CONFIG).find((k) =>
       TRIPS_CONFIG[k].trips.some((t) => t.id === tripId)
     );
     const config = TRIPS_CONFIG[routeKey]?.trips.find((t) => t.id === tripId);
     if (!config || !routeKey) return [];
-    const routeLabel = TRIPS_CONFIG[routeKey].label;
-    const [fromCity, toCity] = routeLabel.split(" → ");
+    const [fromCity, toCity] = TRIPS_CONFIG[routeKey].label.split(" → ");
     return bookings.filter((b) => {
       const routeMatch = b.from === fromCity && b.to === toCity;
       const timeMatch = b.departure === config.time;
-      return routeMatch && timeMatch;
+      const dateMatch = dateFilter ? b.departureDate === dateFilter : true;
+      return routeMatch && timeMatch && dateMatch;
     });
   };
 
@@ -151,7 +147,9 @@ const AdminDashboard = () => {
   if (loading) return <div style={styles.loading}>Loading Dashboard...</div>;
 
   const currentTrips = selectedRoute ? TRIPS_CONFIG[selectedRoute].trips : [];
-  const currentTripBookings = selectedTrip ? getBookingsForTrip(selectedTrip) : [];
+
+  // ✅ Pass selectedDate to filter
+  const currentTripBookings = selectedTrip ? getBookingsForTrip(selectedTrip, selectedDate) : [];
   const filteredBookings = currentTripBookings.filter((b) =>
     b.passengerName?.toLowerCase().includes(search.toLowerCase())
   );
@@ -183,14 +181,14 @@ const AdminDashboard = () => {
       <div style={styles.routeRow}>
         {Object.entries(TRIPS_CONFIG).map(([key, val]) => (
           <button key={key} style={getRouteBtnStyle(key)}
-            onClick={() => { setSelectedRoute(key); setSelectedTrip(null); setShowSummary(false); setSearch(""); }}>
+            onClick={() => { setSelectedRoute(key); setSelectedTrip(null); setShowSummary(false); setSearch(""); setSelectedDate(""); }}>
             {val.label}
             {val.status === "coming_soon" && <span style={styles.soonTag}> 🔜</span>}
             {val.status === "disabled" && <span style={styles.soonTag}> 🔒</span>}
           </button>
         ))}
         <button style={{ ...styles.routeBtn, ...styles.summaryBtn, ...(showSummary ? styles.summaryBtnActive : {}) }}
-          onClick={() => { setShowSummary(true); setSelectedRoute(null); setSelectedTrip(null); }}>
+          onClick={() => { setShowSummary(true); setSelectedRoute(null); setSelectedTrip(null); setSelectedDate(""); }}>
           💰 Total Payment Summary
         </button>
       </div>
@@ -207,7 +205,7 @@ const AdminDashboard = () => {
             {currentTrips.map((trip) => (
               <button key={trip.id}
                 style={{ ...styles.tripBtn, ...(selectedTrip === trip.id ? styles.tripBtnActive : {}) }}
-                onClick={() => { setSelectedTrip(trip.id); setSearch(""); }}>
+                onClick={() => { setSelectedTrip(trip.id); setSearch(""); setSelectedDate(""); }}>
                 <div style={styles.tripBtnLabel}>{trip.label}</div>
                 <div style={styles.tripBtnTime}>{trip.time}</div>
                 <div style={styles.tripBtnRev}>${getTripRevenue(trip.id).toLocaleString()}</div>
@@ -227,10 +225,36 @@ const AdminDashboard = () => {
             </div>
             <div style={styles.tripDetailRevenue}>Trip Total: ${getTripRevenue(selectedTrip).toLocaleString()}</div>
           </div>
+
+          {/* ✅ DATE FILTER */}
+          <div style={styles.dateFilterRow}>
+            <label style={styles.dateFilterLabel}>📅 Filter by Date:</label>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              style={styles.dateInput}
+            />
+            {selectedDate && (
+              <button style={styles.clearDateBtn} onClick={() => setSelectedDate("")}>
+                ✕ Clear
+              </button>
+            )}
+          </div>
+
+          {selectedDate && (
+            <div style={styles.dateInfoBanner}>
+              📋 Showing bookings for: <strong>{selectedDate}</strong> — {filteredBookings.length} booking(s) found
+            </div>
+          )}
+
           <input type="text" placeholder="Search passenger..." style={styles.searchInput}
             value={search} onChange={(e) => setSearch(e.target.value)} />
+
           {filteredBookings.length === 0 ? (
-            <div style={styles.noBookings}>No bookings for this trip yet.</div>
+            <div style={styles.noBookings}>
+              {selectedDate ? `No bookings found for ${selectedDate}` : "No bookings for this trip yet."}
+            </div>
           ) : (
             <>
               <div style={styles.tableWrapper}>
@@ -370,6 +394,14 @@ const styles = {
   tripDetailTitle: { fontSize: 18, fontWeight: 700, color: "#f59e0b" },
   tripDetailTime: { fontSize: 14, color: "#94a3b8" },
   tripDetailRevenue: { fontSize: 16, fontWeight: 700, color: "#22c55e", background: "#0f2818", padding: "8px 16px", borderRadius: 8 },
+
+  // ✅ DATE FILTER STYLES
+  dateFilterRow: { display: "flex", alignItems: "center", gap: 12, marginBottom: 12, flexWrap: "wrap" },
+  dateFilterLabel: { fontSize: 14, color: "#94a3b8", whiteSpace: "nowrap" },
+  dateInput: { padding: "8px 12px", borderRadius: 8, border: "1px solid #334155", background: "#0f172a", color: "#fff", fontSize: 14, colorScheme: "dark" },
+  clearDateBtn: { padding: "8px 14px", borderRadius: 8, border: "none", background: "#334155", color: "#fff", cursor: "pointer", fontSize: 13 },
+  dateInfoBanner: { background: "#1e3a5f", color: "#93c5fd", padding: "8px 14px", borderRadius: 8, fontSize: 13, marginBottom: 12 },
+
   searchInput: { width: "100%", padding: "10px 16px", borderRadius: 8, border: "1px solid #334155", background: "#0f172a", color: "#fff", fontSize: 14, marginBottom: 16, boxSizing: "border-box" },
   noBookings: { textAlign: "center", color: "#64748b", padding: 32, fontSize: 16 },
   tableWrapper: { overflowX: "auto", display: "block" },
